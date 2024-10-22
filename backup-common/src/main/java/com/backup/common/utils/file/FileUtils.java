@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import com.backup.common.config.RuoYiConfig;
+import com.backup.common.config.ProjectConfig;
 import com.backup.common.utils.DateUtils;
 import com.backup.common.utils.StringUtils;
 import com.backup.common.utils.uuid.IdUtils;
@@ -73,7 +73,7 @@ public class FileUtils
      */
     public static String writeImportBytes(byte[] data) throws IOException
     {
-        return writeBytes(data, RuoYiConfig.getImportPath());
+        return writeBytes(data, ProjectConfig.getImportPath());
     }
 
     /**
