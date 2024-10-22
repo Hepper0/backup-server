@@ -181,6 +181,13 @@
                 <version>${backup.version}</version>
             </dependency>
 
+            <!-- 业务模块-->
+            <dependency>
+                <groupId>com.backup</groupId>
+                <artifactId>backup-buz</artifactId>
+                <version>${backup.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -191,6 +198,7 @@
         <module>backup-quartz</module>
         <module>backup-generator</module>
         <module>backup-common</module>
+        <module>backup-buz</module>
     </modules>
     <packaging>pom</packaging>
 
