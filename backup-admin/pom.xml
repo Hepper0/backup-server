@@ -61,6 +61,12 @@
             <artifactId>backup-generator</artifactId>
         </dependency>
 
+        <!-- 业务模块-->
+        <dependency>
+            <groupId>com.backup</groupId>
+            <artifactId>backup-buz</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

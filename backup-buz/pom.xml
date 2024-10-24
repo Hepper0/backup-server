@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>backup-server</artifactId>
+    <artifactId>backup-buz</artifactId>
 
     <description>
         业务层
@@ -21,6 +21,11 @@
         <dependency>
             <groupId>com.backup</groupId>
             <artifactId>backup-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.backup</groupId>
+            <artifactId>backup-framework</artifactId>
         </dependency>
 
     </dependencies>
