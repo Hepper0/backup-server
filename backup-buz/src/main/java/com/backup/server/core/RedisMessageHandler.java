@@ -15,7 +15,7 @@ public class RedisMessageHandler {
     @Resource
     RedisCache redisCache;
 
-    public void recv(String msg) {
+    public void handleMessage(String msg) {
         MessageHandler handler;
         JSONObject msgJson = JSONObject.parseObject(msg);
         com.backup.server.core.domain.Message message = new com.backup.server.core.domain.Message();
@@ -48,14 +48,18 @@ public class RedisMessageHandler {
                 try {
                     MessageHandler messageHandler = MessageHandler.getHandler(ip);
                     Object msg = messageHandler.takeMessage();
-                    if (msg instanceof com.backup.server.core.domain.Message) {
+                    if (msg instanceof Message) {
                         log.info("收到消息: {}", msg.toString());
                         if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
                             String resp = "我收到啦";
                             log.info("回复消息: {}", resp);
                             messageHandler.response(resp);
                         } else if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_PUSH) {
-
+                            /*
+                            1. Agent 空间不足
+                            2. 任务完成
+                            3.
+                            */
                         }
                     } else {
                         break;

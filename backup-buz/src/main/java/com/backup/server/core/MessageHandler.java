@@ -104,31 +104,6 @@ public class MessageHandler {
         }
     }
 
-    public static void recv(String msg) {
-        MessageHandler handler;
-        JSONObject msgJson = JSONObject.parseObject(msg);
-        Message message = new Message();
-        String ip = msgJson.getString("ip");
-        int messageType = msgJson.getInteger("type");
-        message.setIp(ip);
-        message.setType(messageType);
-        message.setData(msgJson.getJSONObject("data"));
-        if (messageType == MESSAGE_TYPE_RESPONSE) {
-            String uuid = msgJson.getString("uuid");
-            handler = MSG_MAP.get(uuid);
-            if (handler == null) {
-                throw new RuntimeException("Agent message handler is not found!");
-            }
-            handler.handleResponseMessage(message);
-        } else {
-            handler = agentReceiverMap.get(ip);
-            if (handler == null) {
-                handler = new MessageHandler(ip);
-            }
-            handler.handleMessage(message);
-        }
-    }
-
     public Message createMessage(String data) {
         uuid = IdUtils.simpleUUID();
         Message message = new Message();
