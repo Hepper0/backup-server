@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backup.server.mapper.BkAgentMapper">
+    
+    <resultMap type="BkAgent" id="BkAgentResult">
+        <result property="agentId"    column="agent_id"    />
+        <result property="hostname"    column="hostname"    />
+        <result property="ip"    column="ip"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBkAgentVo">
+        select agent_id, hostname, ip, remark, status, deleted, create_time, create_by, update_time, update_by from bk_agent
+    </sql>
+
+    <select id="selectBkAgentList" parameterType="BkAgent" resultMap="BkAgentResult">
+        <include refid="selectBkAgentVo"/>
+        <where>  
+            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectBkAgentByAgentId" parameterType="Long" resultMap="BkAgentResult">
+        <include refid="selectBkAgentVo"/>
+        where agent_id = #{agentId}
+    </select>
+
+    <insert id="insertBkAgent" parameterType="BkAgent" useGeneratedKeys="true" keyProperty="agentId">
+        insert into bk_agent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hostname != null">hostname,</if>
+            <if test="ip != null">ip,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hostname != null">#{hostname},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBkAgent" parameterType="BkAgent">
+        update bk_agent
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hostname != null">hostname = #{hostname},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where agent_id = #{agentId}
+    </update>
+
+    <delete id="deleteBkAgentByAgentId" parameterType="Long">
+        delete from bk_agent where agent_id = #{agentId}
+    </delete>
+
+    <delete id="deleteBkAgentByAgentIds" parameterType="String">
+        delete from bk_agent where agent_id in 
+        <foreach item="agentId" collection="array" open="(" separator="," close=")">
+            #{agentId}
+        </foreach>
+    </delete>
+</mapper>
