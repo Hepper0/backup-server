@@ -69,11 +69,15 @@ create table bk_agent_scheduler(
 );
 
 
-
+-- 主菜单
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `remark`)
-VALUES (5, '代理管理', 0, 5, 'agent', NULL, '', '', 1, 0, 'M', '0', '0', '', 'agent', 'admin', '代理管理目录');
+VALUES (5, '代理管理', 0, 0, 'agent', NULL, '', '', 1, 0, 'M', '0', '0', '', 'agent', 'admin', '代理管理目录');
+
+-- 菜单
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, remark)
 VALUES (2000, '代理', 5, 1, 'agent', 'agent/agent/index', NULL, '', 1, 0, 'C', '0', '0', 'server:agent:list', '#', 'admin', '代理菜单');
+
+-- 按钮
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`)
 VALUES (2001, '代理查询', 2000, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'server:agent:query', '#', 'admin');
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`)
@@ -84,3 +88,44 @@ INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `p
 VALUES (2004, '代理删除', 2000, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'server:agent:remove', '#', 'admin');
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`)
 VALUES (2005, '代理导出', 2000, 5, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'server:agent:export', '#', 'admin');
+
+-- 菜单
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(3000, '备份任务', '5', '2', 'task', 'agent/task/index', 1, 0, 'C', '0', '0', 'server:task:list', '#', 'admin', sysdate(), '', null, '备份任务菜单');
+
+-- 按钮
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(3001, '备份任务查询', 3000, '1',  '#', '', 1, 0, 'F', '0', '0', 'server:task:query',        '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(3002, '备份任务新增', 3000, '2',  '#', '', 1, 0, 'F', '0', '0', 'server:task:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(3003, '备份任务修改', 3000, '3',  '#', '', 1, 0, 'F', '0', '0', 'server:task:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(3004, '备份任务删除', 3000, '4',  '#', '', 1, 0, 'F', '0', '0', 'server:task:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(3005, '备份任务导出', 3000, '5',  '#', '', 1, 0, 'F', '0', '0', 'server:task:export',       '#', 'admin', sysdate(), '', null, '');
+
+-- 菜单
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(4000, '备份计划', '5', '3', 'scheduler', 'server/scheduler/index', 1, 0, 'C', '0', '0', 'server:scheduler:list', '#', 'admin', sysdate(), '', null, '备份计划菜单');
+
+
+-- 按钮
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(4001, '备份计划查询', 4000, '1',  '#', '', 1, 0, 'F', '0', '0', 'server:scheduler:query',        '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(4002, '备份计划新增', 4000, '2',  '#', '', 1, 0, 'F', '0', '0', 'server:scheduler:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(4003, '备份计划修改', 4000, '3',  '#', '', 1, 0, 'F', '0', '0', 'server:scheduler:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(4004, '备份计划删除', 4000, '4',  '#', '', 1, 0, 'F', '0', '0', 'server:scheduler:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(4005, '备份计划导出', 4000, '5',  '#', '', 1, 0, 'F', '0', '0', 'server:scheduler:export',       '#', 'admin', sysdate(), '', null, '');

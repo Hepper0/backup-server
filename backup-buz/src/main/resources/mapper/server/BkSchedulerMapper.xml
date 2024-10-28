@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backup.server.mapper.BkSchedulerMapper">
+
+    <resultMap type="BkScheduler" id="BkSchedulerResult">
+        <result property="schedulerId"    column="scheduler_id"    />
+        <result property="name"    column="name"    />
+        <result property="min"    column="min"    />
+        <result property="hour"    column="hour"    />
+        <result property="day"    column="day"    />
+        <result property="week"    column="week"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBkSchedulerVo">
+        select scheduler_id, name, min, hour, day, week, status, remark, deleted, create_time, create_by, update_time, update_by from bk_scheduler
+    </sql>
+
+    <select id="selectBkSchedulerList" parameterType="BkScheduler" resultMap="BkSchedulerResult">
+        <include refid="selectBkSchedulerVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="min != null  and min != ''"> and min = #{min}</if>
+            <if test="hour != null  and hour != ''"> and hour = #{hour}</if>
+            <if test="day != null  and day != ''"> and day = #{day}</if>
+            <if test="week != null  and week != ''"> and week = #{week}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+
+    <select id="selectBkSchedulerBySchedulerId" parameterType="Long" resultMap="BkSchedulerResult">
+        <include refid="selectBkSchedulerVo"/>
+        where scheduler_id = #{schedulerId}
+    </select>
+
+    <insert id="insertBkScheduler" parameterType="BkScheduler" useGeneratedKeys="true" keyProperty="schedulerId">
+        insert into bk_scheduler
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="min != null">min,</if>
+            <if test="hour != null">hour,</if>
+            <if test="day != null">day,</if>
+            <if test="week != null">week,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="min != null">#{min},</if>
+            <if test="hour != null">#{hour},</if>
+            <if test="day != null">#{day},</if>
+            <if test="week != null">#{week},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBkScheduler" parameterType="BkScheduler">
+        update bk_scheduler
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="min != null">min = #{min},</if>
+            <if test="hour != null">hour = #{hour},</if>
+            <if test="day != null">day = #{day},</if>
+            <if test="week != null">week = #{week},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where scheduler_id = #{schedulerId}
+    </update>
+
+    <delete id="deleteBkSchedulerBySchedulerId" parameterType="Long">
+        delete from bk_scheduler where scheduler_id = #{schedulerId}
+    </delete>
+
+    <delete id="deleteBkSchedulerBySchedulerIds" parameterType="String">
+        delete from bk_scheduler where scheduler_id in
+        <foreach item="schedulerId" collection="array" open="(" separator="," close=")">
+            #{schedulerId}
+        </foreach>
+    </delete>
+</mapper>

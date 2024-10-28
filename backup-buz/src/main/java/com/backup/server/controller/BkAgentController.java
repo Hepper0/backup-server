@@ -28,7 +28,7 @@ import com.backup.common.core.page.TableDataInfo;
  * @date 2024-10-27
  */
 @RestController
-@RequestMapping("/system/agent")
+@RequestMapping("/server/agent")
 public class BkAgentController extends BaseController
 {
     @Autowired
@@ -37,7 +37,7 @@ public class BkAgentController extends BaseController
     /**
      * 查询代理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:agent:list')")
+    @PreAuthorize("@ss.hasPermi('server:agent:list')")
     @GetMapping("/list")
     public TableDataInfo list(BkAgent bkAgent)
     {
@@ -49,7 +49,7 @@ public class BkAgentController extends BaseController
     /**
      * 导出代理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:agent:export')")
+    @PreAuthorize("@ss.hasPermi('server:agent:export')")
     @Log(title = "代理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BkAgent bkAgent)
@@ -62,7 +62,7 @@ public class BkAgentController extends BaseController
     /**
      * 获取代理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:agent:query')")
+    @PreAuthorize("@ss.hasPermi('server:agent:query')")
     @GetMapping(value = "/{agentId}")
     public AjaxResult getInfo(@PathVariable("agentId") Long agentId)
     {
@@ -72,7 +72,7 @@ public class BkAgentController extends BaseController
     /**
      * 新增代理
      */
-    @PreAuthorize("@ss.hasPermi('system:agent:add')")
+    @PreAuthorize("@ss.hasPermi('server:agent:add')")
     @Log(title = "代理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BkAgent bkAgent)
@@ -83,7 +83,7 @@ public class BkAgentController extends BaseController
     /**
      * 修改代理
      */
-    @PreAuthorize("@ss.hasPermi('system:agent:edit')")
+    @PreAuthorize("@ss.hasPermi('server:agent:edit')")
     @Log(title = "代理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BkAgent bkAgent)
@@ -94,7 +94,7 @@ public class BkAgentController extends BaseController
     /**
      * 删除代理
      */
-    @PreAuthorize("@ss.hasPermi('system:agent:remove')")
+    @PreAuthorize("@ss.hasPermi('server:agent:remove')")
     @Log(title = "代理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{agentIds}")
     public AjaxResult remove(@PathVariable Long[] agentIds)
