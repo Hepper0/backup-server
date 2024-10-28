@@ -19,19 +19,19 @@ public class BkAgent extends BaseEntity
     private Long agentId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "Hostname", readConverterExp = "$column.readConverterExp()")
     private String hostname;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "IP", readConverterExp = "$column.readConverterExp()")
     private String ip;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "状态", readConverterExp = "$column.readConverterExp()")
     private Long status;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+//    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
     public void setAgentId(Long agentId)
