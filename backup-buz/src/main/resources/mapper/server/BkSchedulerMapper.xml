@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="min"    column="min"    />
         <result property="hour"    column="hour"    />
         <result property="day"    column="day"    />
+        <result property="mon"    column="mon"    />
         <result property="week"    column="week"    />
         <result property="status"    column="status"    />
         <result property="remark"    column="remark"    />
@@ -21,16 +22,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBkSchedulerVo">
-        select scheduler_id, name, min, hour, day, week, status, remark, deleted, create_time, create_by, update_time, update_by from bk_scheduler
+        select scheduler_id, name, min, hour, day, mon, week, status, remark, deleted, create_time, create_by, update_time, update_by from bk_scheduler
     </sql>
 
     <select id="selectBkSchedulerList" parameterType="BkScheduler" resultMap="BkSchedulerResult">
         <include refid="selectBkSchedulerVo"/>
         <where>
+            deleted = 0
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="min != null  and min != ''"> and min = #{min}</if>
             <if test="hour != null  and hour != ''"> and hour = #{hour}</if>
             <if test="day != null  and day != ''"> and day = #{day}</if>
+            <if test="mon != null  and mon != ''"> and mon = #{mon}</if>
             <if test="week != null  and week != ''"> and week = #{week}</if>
             <if test="status != null "> and status = #{status}</if>
             <if test="deleted != null "> and deleted = #{deleted}</if>
@@ -39,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBkSchedulerBySchedulerId" parameterType="Long" resultMap="BkSchedulerResult">
         <include refid="selectBkSchedulerVo"/>
-        where scheduler_id = #{schedulerId}
+        where scheduler_id = #{schedulerId} and deleted = 0
     </select>
 
     <insert id="insertBkScheduler" parameterType="BkScheduler" useGeneratedKeys="true" keyProperty="schedulerId">
@@ -49,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="min != null">min,</if>
             <if test="hour != null">hour,</if>
             <if test="day != null">day,</if>
+            <if test="mon != null">mon,</if>
             <if test="week != null">week,</if>
             <if test="status != null">status,</if>
             <if test="remark != null">remark,</if>
@@ -63,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="min != null">#{min},</if>
             <if test="hour != null">#{hour},</if>
             <if test="day != null">#{day},</if>
+            <if test="mon != null">#{mon},</if>
             <if test="week != null">#{week},</if>
             <if test="status != null">#{status},</if>
             <if test="remark != null">#{remark},</if>
@@ -81,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="min != null">min = #{min},</if>
             <if test="hour != null">hour = #{hour},</if>
             <if test="day != null">day = #{day},</if>
+            <if test="mon != null">day = #{mon},</if>
             <if test="week != null">week = #{week},</if>
             <if test="status != null">status = #{status},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -94,11 +100,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteBkSchedulerBySchedulerId" parameterType="Long">
-        delete from bk_scheduler where scheduler_id = #{schedulerId}
+        update bk_scheduler set deleted = 1 where scheduler_id = #{schedulerId}
     </delete>
 
     <delete id="deleteBkSchedulerBySchedulerIds" parameterType="String">
-        delete from bk_scheduler where scheduler_id in
+        update bk_scheduler set deleted = 1 where scheduler_id in
         <foreach item="schedulerId" collection="array" open="(" separator="," close=")">
             #{schedulerId}
         </foreach>

@@ -19,31 +19,35 @@ public class BkScheduler extends BaseEntity
     private Long schedulerId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "计划名称", readConverterExp = "$column.readConverterExp()")
     private String name;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "分", readConverterExp = "$column.readConverterExp()")
     private String min;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "时", readConverterExp = "$column.readConverterExp()")
     private String hour;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "日", readConverterExp = "$column.readConverterExp()")
     private String day;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "月", readConverterExp = "$column.readConverterExp()")
+    private String mon;
+
+    /** $column.columnComment */
+    @Excel(name = "周", readConverterExp = "$column.readConverterExp()")
     private String week;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "状态", readConverterExp = "$column.readConverterExp()")
     private Long status;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+//    @Excel(name = "删除", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
     public void setSchedulerId(Long schedulerId)
@@ -91,6 +95,15 @@ public class BkScheduler extends BaseEntity
     {
         return day;
     }
+    public void setMon(String mon)
+    {
+        this.mon = mon;
+    }
+
+    public String getMon()
+    {
+        return mon;
+    }
     public void setWeek(String week)
     {
         this.week = week;
@@ -127,6 +140,7 @@ public class BkScheduler extends BaseEntity
             .append("min", getMin())
             .append("hour", getHour())
             .append("day", getDay())
+            .append("mon", getMon())
             .append("week", getWeek())
             .append("status", getStatus())
             .append("remark", getRemark())

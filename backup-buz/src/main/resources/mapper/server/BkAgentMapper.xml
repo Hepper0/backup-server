@@ -23,7 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBkAgentList" parameterType="BkAgent" resultMap="BkAgentResult">
         <include refid="selectBkAgentVo"/>
-        <where>  
+        <where>
+            deleted = 0
             <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
             <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
             <if test="status != null "> and status = #{status}</if>
@@ -33,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectBkAgentByAgentId" parameterType="Long" resultMap="BkAgentResult">
         <include refid="selectBkAgentVo"/>
-        where agent_id = #{agentId}
+        where agent_id = #{agentId} and deleted = 0
     </select>
 
     <insert id="insertBkAgent" parameterType="BkAgent" useGeneratedKeys="true" keyProperty="agentId">
@@ -79,11 +80,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteBkAgentByAgentId" parameterType="Long">
-        delete from bk_agent where agent_id = #{agentId}
+        update bk_agent set deleted = 1 where agent_id = #{agentId}
     </delete>
 
     <delete id="deleteBkAgentByAgentIds" parameterType="String">
-        delete from bk_agent where agent_id in 
+        update bk_agent set deleted = 1 where agent_id in
         <foreach item="agentId" collection="array" open="(" separator="," close=")">
             #{agentId}
         </foreach>

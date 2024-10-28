@@ -26,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBkTaskList" parameterType="BkTask" resultMap="BkTaskResult">
         <include refid="selectBkTaskVo"/>
         <where>
+            deleted = 0
             <if test="target != null  and target != ''"> and target = #{target}</if>
             <if test="backupPath != null  and backupPath != ''"> and backup_path = #{backupPath}</if>
             <if test="startTime != null "> and start_time = #{startTime}</if>
@@ -37,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBkTaskByTaskId" parameterType="Long" resultMap="BkTaskResult">
         <include refid="selectBkTaskVo"/>
-        where task_id = #{taskId}
+        where task_id = #{taskId} and deleted = 0
     </select>
 
     <insert id="insertBkTask" parameterType="BkTask" useGeneratedKeys="true" keyProperty="taskId">
@@ -89,11 +90,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteBkTaskByTaskId" parameterType="Long">
-        delete from bk_task where task_id = #{taskId}
+        update bk_task set deleted = 1 where task_id = #{taskId}
     </delete>
 
     <delete id="deleteBkTaskByTaskIds" parameterType="String">
-        delete from bk_task where task_id in
+        update bk_task set deleted = 1  where task_id in
         <foreach item="taskId" collection="array" open="(" separator="," close=")">
             #{taskId}
         </foreach>
