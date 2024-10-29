@@ -18,10 +18,10 @@ public class BkTask extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+    /** 任务Id */
     private Long taskId;
 
-    /** $column.columnComment */
+    /** 备份目标 */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String target;
 

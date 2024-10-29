@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backup.server.mapper.BkAgentResourceMapper">
+    
+    <resultMap type="BkAgentResource" id="BkAgentResourceResult">
+        <result property="id"    column="id"    />
+        <result property="agentId"    column="agent_id"    />
+        <result property="resourceId"    column="resource_id"    />
+    </resultMap>
+
+    <sql id="selectBkAgentResourceVo">
+        select id, agent_id, resource_id from bk_agent_resource
+    </sql>
+
+    <select id="selectBkAgentResourceList" parameterType="BkAgentResource" resultMap="BkAgentResourceResult">
+        <include refid="selectBkAgentResourceVo"/>
+        <where>  
+            <if test="agentId != null  and agentId != ''"> and agent_id = #{agentId}</if>
+            <if test="resourceId != null  and resourceId != ''"> and resource_id = #{resourceId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBkAgentResourceById" parameterType="Long" resultMap="BkAgentResourceResult">
+        <include refid="selectBkAgentResourceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBkAgentResource" parameterType="BkAgentResource" useGeneratedKeys="true" keyProperty="id">
+        insert into bk_agent_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">agent_id,</if>
+            <if test="resourceId != null">resource_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">#{agentId},</if>
+            <if test="resourceId != null">#{resourceId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBkAgentResource" parameterType="BkAgentResource">
+        update bk_agent_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="agentId != null">agent_id = #{agentId},</if>
+            <if test="resourceId != null">resource_id = #{resourceId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBkAgentResourceById" parameterType="Long">
+        delete from bk_agent_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteBkAgentResourceByIds" parameterType="String">
+        delete from bk_agent_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

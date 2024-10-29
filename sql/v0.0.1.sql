@@ -15,12 +15,7 @@ drop table if exists bk_agent_resource;
 create table bk_agent_resource(
                       id int auto_increment primary key,
                       agent_id varchar(100),
-                      resource_id varchar(100),
-                      deleted int default 0,
-                      create_time datetime default now(),
-                      create_by varchar(64),
-                      update_time datetime,
-                      update_by varchar(64)
+                      resource_id varchar(100)
 );
 
 drop table if exists bk_task;
