@@ -2,7 +2,13 @@ package com.backup.server.core;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.core.redis.RedisCache;
+import com.backup.common.utils.bean.BeanUtils;
+import com.backup.server.core.domain.AgentInfo;
+import com.backup.server.core.domain.AgentTaskInfo;
 import com.backup.server.core.domain.Message;
+import com.backup.server.domain.BkAgent;
+import com.backup.server.service.IAgentService;
+import com.backup.server.service.IBkAgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +21,9 @@ public class RedisMessageHandler {
     @Resource
     RedisCache redisCache;
 
+    @Resource
+    IBkAgentService agentService;
+
     public void handleMessage(String msg) {
         MessageHandler handler;
         JSONObject msgJson = JSONObject.parseObject(msg);
@@ -23,7 +32,7 @@ public class RedisMessageHandler {
         int messageType = msgJson.getInteger("type");
         message.setIp(ip);
         message.setType(messageType);
-        message.setData(msgJson.getJSONObject("data"));
+        message.setPayload(msgJson.getJSONObject("payload"));
         if (messageType == MessageHandler.MESSAGE_TYPE_RESPONSE) {
             String uuid = msgJson.getString("uuid");
             handler = MessageHandler.MSG_MAP.get(uuid);
@@ -58,8 +67,27 @@ public class RedisMessageHandler {
                             /*
                             1. Agent 空间不足
                             2. 任务完成
-                            3.
+                            3. Agent启动
                             */
+                            JSONObject data = (JSONObject) ((Message) msg).getPayload();
+                            String eventType = data.getString("eventType");
+                            JSONObject eventData = data.getJSONObject("data");
+                            switch (eventType) {
+                                case "agentInfo":
+                                    System.out.println(eventData);
+                                    BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
+                                    if (agent == null) {
+                                        BkAgent newAgent = new BkAgent();
+                                        newAgent.setIp(ip);
+                                        newAgent.setHostname(eventData.getString("hostname"));
+                                        agentService.insertBkAgent(newAgent);
+                                    }
+                                    break;
+                                case "taskInfo":
+                                    break;
+                                case "alarm":
+                                    break;
+                            }
                         }
                     } else {
                         break;

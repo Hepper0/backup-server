@@ -34,6 +34,12 @@ public class BkAgentServiceImpl implements IBkAgentService
         return bkAgentMapper.selectBkAgentByAgentId(agentId);
     }
 
+    @Override
+    public BkAgent selectBkAgentByAgentIP(String IP)
+    {
+        return bkAgentMapper.selectBkAgentByAgentIP(IP);
+    }
+
     /**
      * 查询代理列表
      *

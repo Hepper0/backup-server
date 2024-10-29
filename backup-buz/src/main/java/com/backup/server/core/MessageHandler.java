@@ -109,7 +109,7 @@ public class MessageHandler {
         Message message = new Message();
         message.setIp(ip);
         message.setUuid(uuid);
-        message.setData(data);
+        message.setPayload(data);
         return message;
     }
 

@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backup.server.mapper.BkAgentMapper">
-    
+
     <resultMap type="BkAgent" id="BkAgentResult">
         <result property="agentId"    column="agent_id"    />
         <result property="hostname"    column="hostname"    />
@@ -31,10 +31,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deleted != null "> and deleted = #{deleted}</if>
         </where>
     </select>
-    
+
     <select id="selectBkAgentByAgentId" parameterType="Long" resultMap="BkAgentResult">
         <include refid="selectBkAgentVo"/>
         where agent_id = #{agentId} and deleted = 0
+    </select>
+
+    <select id="selectBkAgentByAgentIP" parameterType="String" resultMap="BkAgentResult">
+        <include refid="selectBkAgentVo"/>
+        where ip = #{ip} and deleted = 0
     </select>
 
     <insert id="insertBkAgent" parameterType="BkAgent" useGeneratedKeys="true" keyProperty="agentId">
