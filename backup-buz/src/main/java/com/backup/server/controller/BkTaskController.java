@@ -64,7 +64,7 @@ public class BkTaskController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('server:task:query')")
     @GetMapping(value = "/{taskId}")
-    public AjaxResult getInfo(@PathVariable("taskId") Long taskId)
+    public AjaxResult getInfo(@PathVariable("taskId") String taskId)
     {
         return success(bkTaskService.selectBkTaskByTaskId(taskId));
     }

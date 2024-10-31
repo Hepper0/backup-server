@@ -7,8 +7,10 @@ import com.backup.server.core.domain.AgentInfo;
 import com.backup.server.core.domain.AgentTaskInfo;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkAgent;
+import com.backup.server.domain.BkTask;
 import com.backup.server.service.IAgentService;
 import com.backup.server.service.IBkAgentService;
+import com.backup.server.service.IBkTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,9 @@ public class RedisMessageHandler {
 
     @Resource
     IBkAgentService agentService;
+
+    @Resource
+    IBkTaskService taskService;
 
     public void handleMessage(String msg) {
         MessageHandler handler;
@@ -74,7 +79,6 @@ public class RedisMessageHandler {
                             JSONObject eventData = data.getJSONObject("data");
                             switch (eventType) {
                                 case "agentInfo":
-                                    System.out.println(eventData);
                                     BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
                                     if (agent == null) {
                                         BkAgent newAgent = new BkAgent();
@@ -84,6 +88,24 @@ public class RedisMessageHandler {
                                     }
                                     break;
                                 case "taskInfo":
+                                    String taskId = eventData.getString("taskId");
+                                    BkTask task = taskService.selectBkTaskByTaskId(taskId);
+                                    if (task == null) {
+                                        task = new BkTask();
+                                        task.setTaskId(taskId);
+                                        task.setBackupPath(eventData.getString("backupPath"));
+                                        task.setTarget(eventData.getString("target"));
+                                        task.setStartTime(eventData.getDate("startTime"));
+                                        task.setEndTime(eventData.getDate("endTime"));
+                                        task.setStatus(eventData.getLong("status"));
+                                        task.setRemark(eventData.getString("remark"));
+                                        taskService.insertBkTask(task);
+                                    } else {
+                                        task.setEndTime(eventData.getDate("endTime"));
+                                        task.setStatus(eventData.getLong("status"));
+                                        task.setRemark(eventData.getString("remark"));
+                                        taskService.updateBkTask(task);
+                                    }
                                     break;
                                 case "alarm":
                                     break;

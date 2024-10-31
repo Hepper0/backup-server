@@ -19,7 +19,7 @@ public class BkTask extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 任务Id */
-    private Long taskId;
+    private String taskId;
 
     /** 备份目标 */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
@@ -45,12 +45,12 @@ public class BkTask extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
-    public void setTaskId(Long taskId)
+    public void setTaskId(String taskId)
     {
         this.taskId = taskId;
     }
 
-    public Long getTaskId()
+    public String getTaskId()
     {
         return taskId;
     }

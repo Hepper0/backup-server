@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="selectBkTaskByTaskId" parameterType="Long" resultMap="BkTaskResult">
+    <select id="selectBkTaskByTaskId" parameterType="String" resultMap="BkTaskResult">
         <include refid="selectBkTaskVo"/>
         where task_id = #{taskId} and deleted = 0
     </select>
@@ -44,6 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertBkTask" parameterType="BkTask" useGeneratedKeys="true" keyProperty="taskId">
         insert into bk_task
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
             <if test="target != null">target,</if>
             <if test="backupPath != null">backup_path,</if>
             <if test="startTime != null">start_time,</if>
@@ -57,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
             <if test="target != null">#{target},</if>
             <if test="backupPath != null">#{backupPath},</if>
             <if test="startTime != null">#{startTime},</if>
@@ -89,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where task_id = #{taskId}
     </update>
 
-    <delete id="deleteBkTaskByTaskId" parameterType="Long">
+    <delete id="deleteBkTaskByTaskId" parameterType="String">
         update bk_task set deleted = 1 where task_id = #{taskId}
     </delete>
 

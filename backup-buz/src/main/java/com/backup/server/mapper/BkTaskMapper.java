@@ -17,7 +17,7 @@ public interface BkTaskMapper
      * @param taskId 备份任务主键
      * @return 备份任务
      */
-    public BkTask selectBkTaskByTaskId(Long taskId);
+    public BkTask selectBkTaskByTaskId(String taskId);
 
     /**
      * 查询备份任务列表

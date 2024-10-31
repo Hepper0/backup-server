@@ -20,7 +20,7 @@ create table bk_agent_resource(
 
 drop table if exists bk_task;
 create table bk_task(
-                      task_id int auto_increment primary key,
+                      task_id varchar(50) primary key,
                       target varchar(100),
                       backup_path varchar(200),
                       start_time datetime,

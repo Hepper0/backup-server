@@ -27,7 +27,7 @@ public class BkTaskServiceImpl implements IBkTaskService
      * @return 备份任务
      */
     @Override
-    public BkTask selectBkTaskByTaskId(Long taskId)
+    public BkTask selectBkTaskByTaskId(String taskId)
     {
         return bkTaskMapper.selectBkTaskByTaskId(taskId);
     }
