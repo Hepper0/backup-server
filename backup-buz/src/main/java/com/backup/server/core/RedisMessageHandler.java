@@ -5,6 +5,7 @@ import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.bean.BeanUtils;
 import com.backup.server.core.domain.AgentInfo;
 import com.backup.server.core.domain.AgentTaskInfo;
+import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkAgent;
 import com.backup.server.domain.BkTask;
@@ -63,11 +64,13 @@ public class RedisMessageHandler {
                     MessageHandler messageHandler = MessageHandler.getHandler(ip);
                     Object msg = messageHandler.takeMessage();
                     if (msg instanceof Message) {
-                        log.info("收到消息: {}", msg.toString());
-                        if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
-                            String resp = "我收到啦";
-                            log.info("回复消息: {}", resp);
-                            messageHandler.response(resp);
+                        Message message = (Message)msg;
+                        log.info("收到消息: {}", message.toString());
+                        if (message.getType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
+                            JSONObject respJson = handleResponse(message.getPayload());
+                            Message respMsg = messageHandler.createResponseMessage(respJson);
+                            log.info("回复消息: {}", respMsg);
+                            messageHandler.response(respMsg.toString());
                         } else if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_PUSH) {
                             /*
                             1. Agent 空间不足
@@ -75,8 +78,9 @@ public class RedisMessageHandler {
                             3. Agent启动
                             */
                             JSONObject data = (JSONObject) ((Message) msg).getPayload();
-                            String eventType = data.getString("eventType");
-                            JSONObject eventData = data.getJSONObject("data");
+                            BuzMessage buzMessage = new BuzMessage(data);
+                            String eventType = buzMessage.getEventType();
+                            JSONObject eventData = (JSONObject)buzMessage.getData();
                             switch (eventType) {
                                 case "agentInfo":
                                     BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
@@ -142,6 +146,18 @@ public class RedisMessageHandler {
                 }
                 break;
         }
+    }
+
+    public JSONObject handleResponse(Object payload) {
+        JSONObject json = (JSONObject) payload;
+        BuzMessage buzMessage = new BuzMessage(json);
+        switch (buzMessage.getEventType()) {
+            case "config":
+                break;
+            case "scheduler":
+                break;
+        }
+        return null;
     }
 
 }

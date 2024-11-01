@@ -61,7 +61,7 @@ public class MessageHandler {
     }
 
     public void response(String data) {
-        Message message = createMessage(data, MESSAGE_TYPE_RESPONSE);
+        Message message = createResponseMessage(data);
         sendMessage(message);
     }
 
@@ -71,7 +71,7 @@ public class MessageHandler {
 
     public Message request(String data) {
         countDownLatch = new CountDownLatch(1);
-        Message message = createMessage(data, MESSAGE_TYPE_REQUEST);
+        Message message = createRequestMessage(data);
         try {
             MSG_MAP.put(message.getUuid(), this);
             sendMessage(message);
@@ -104,7 +104,7 @@ public class MessageHandler {
         }
     }
 
-    public Message createMessage(String data) {
+    public Message createMessage(Object data) {
         uuid = IdUtils.simpleUUID();
         Message message = new Message();
         message.setIp(ip);
@@ -113,9 +113,21 @@ public class MessageHandler {
         return message;
     }
 
-    public Message createMessage(String data, int type) {
+    public Message createPushMessage(Object data) {
         Message message = createMessage(data);
-        message.setType(type);
+        message.setType(MESSAGE_TYPE_PUSH);
+        return message;
+    }
+
+    public Message createRequestMessage(Object data) {
+        Message message = createMessage(data);
+        message.setType(MESSAGE_TYPE_REQUEST);
+        return message;
+    }
+
+    public Message createResponseMessage(Object data) {
+        Message message = createMessage(data);
+        message.setType(MESSAGE_TYPE_RESPONSE);
         return message;
     }
 

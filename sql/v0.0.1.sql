@@ -64,6 +64,23 @@ create table bk_agent_scheduler(
                      update_by varchar(64)
 );
 
+drop if exists bk_agent_config;
+create table bk_agent_config(
+    id int auto_increment primary key,
+    sf_host varchar(20),
+    sf_port varchar(10),
+    sf_ak varchar(100),
+    sf_sk varchar(100),
+    task_timeout int,
+    redis_host varchar(20),
+    redis_port varchar(10),
+    redis_db varchar(5),
+    redis_password varchar(50),
+    state int default 0,
+    create_time datetime default now(),
+    update_time datetime
+);
+
 
 -- 主菜单
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `remark`)
@@ -125,3 +142,24 @@ values(4004, '备份计划删除', 4000, '4',  '#', '', 1, 0, 'F', '0', '0', 'se
 
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
 values(4005, '备份计划导出', 4000, '5',  '#', '', 1, 0, 'F', '0', '0', 'server:scheduler:export',       '#', 'admin', sysdate(), '', null, '');
+
+-- 菜单 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(5000, '代理配置', '5', '4', 'config', 'agent/config/index', 1, 0, 'C', '0', '0', 'server:config:list', '#', 'admin', sysdate(), '', null, '代理配置菜单');
+
+
+-- 按钮 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(5001, '代理配置查询', 5000, '1',  '#', '', 1, 0, 'F', '0', '0', 'server:config:query',        '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(5002,'代理配置新增', 5000, '2',  '#', '', 1, 0, 'F', '0', '0', 'server:config:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(5003,'代理配置修改', 5000, '3',  '#', '', 1, 0, 'F', '0', '0', 'server:config:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(5004,'代理配置删除', 5000, '4',  '#', '', 1, 0, 'F', '0', '0', 'server:config:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(5005,'代理配置导出', 5000, '5',  '#', '', 1, 0, 'F', '0', '0', 'server:config:export',       '#', 'admin', sysdate(), '', null, '');

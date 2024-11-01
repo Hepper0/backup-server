@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backup.server.mapper.BkAgentSchedulerMapper">
+
+    <resultMap type="BkAgentScheduler" id="BkAgentSchedulerResult">
+        <result property="id"    column="id"    />
+        <result property="agentId"    column="agent_id"    />
+        <result property="scheduler"    column="scheduler"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBkAgentSchedulerVo">
+        select id, agent_id, scheduler, deleted, create_time, create_by, update_time, update_by from bk_agent_scheduler
+    </sql>
+
+    <select id="selectBkAgentSchedulerList" parameterType="BkAgentScheduler" resultMap="BkAgentSchedulerResult">
+        <include refid="selectBkAgentSchedulerVo"/>
+        <where>
+            <if test="agentId != null  and agentId != ''"> and agent_id = #{agentId}</if>
+            <if test="scheduler != null  and scheduler != ''"> and scheduler = #{scheduler}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+
+    <select id="selectBkAgentSchedulerById" parameterType="Long" resultMap="BkAgentSchedulerResult">
+        <include refid="selectBkAgentSchedulerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBkAgentScheduler" parameterType="BkAgentScheduler" useGeneratedKeys="true" keyProperty="id">
+        insert into bk_agent_scheduler
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">agent_id,</if>
+            <if test="scheduler != null">scheduler,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">#{agentId},</if>
+            <if test="scheduler != null">#{scheduler},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBkAgentScheduler" parameterType="BkAgentScheduler">
+        update bk_agent_scheduler
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="agentId != null">agent_id = #{agentId},</if>
+            <if test="scheduler != null">scheduler = #{scheduler},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBkAgentSchedulerById" parameterType="Long">
+        delete from bk_agent_scheduler where id = #{id}
+    </delete>
+
+    <delete id="deleteBkAgentSchedulerByIds" parameterType="String">
+        delete from bk_agent_scheduler where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

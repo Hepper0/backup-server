@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backup.server.mapper.BkAgentConfigMapper">
+
+    <resultMap type="BkAgentConfig" id="BkAgentConfigResult">
+        <result property="id"    column="id"    />
+        <result property="sfHost"    column="sf_host"    />
+        <result property="sfPort"    column="sf_port"    />
+        <result property="sfAk"    column="sf_ak"    />
+        <result property="sfSk"    column="sf_sk"    />
+        <result property="taskTimeout"    column="task_timeout"    />
+        <result property="redisHost"    column="redis_host"    />
+        <result property="redisPort"    column="redis_port"    />
+        <result property="redisDb"    column="redis_db"    />
+        <result property="redisPassword"    column="redis_password"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBkAgentConfigVo">
+        select id, sf_host, sf_port, sf_ak, sf_sk, task_timeout, redis_host, redis_port, redis_db, redis_password, state, create_time, update_time from bk_agent_config
+    </sql>
+
+    <select id="selectBkAgentConfigList" parameterType="BkAgentConfig" resultMap="BkAgentConfigResult">
+        <include refid="selectBkAgentConfigVo"/>
+        <where>
+            <if test="sfHost != null  and sfHost != ''"> and sf_host = #{sfHost}</if>
+            <if test="sfPort != null  and sfPort != ''"> and sf_port = #{sfPort}</if>
+            <if test="sfAk != null  and sfAk != ''"> and sf_ak = #{sfAk}</if>
+            <if test="sfSk != null  and sfSk != ''"> and sf_sk = #{sfSk}</if>
+            <if test="taskTimeout != null "> and task_timeout = #{taskTimeout}</if>
+            <if test="redisHost != null  and redisHost != ''"> and redis_host = #{redisHost}</if>
+            <if test="redisPort != null  and redisPort != ''"> and redis_port = #{redisPort}</if>
+            <if test="redisDb != null  and redisDb != ''"> and redis_db = #{redisDb}</if>
+            <if test="redisPassword != null  and redisPassword != ''"> and redis_password = #{redisPassword}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+    </select>
+
+    <select id="selectBkAgentConfigById" parameterType="Long" resultMap="BkAgentConfigResult">
+        <include refid="selectBkAgentConfigVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBkAgentConfig" parameterType="BkAgentConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into bk_agent_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sfHost != null">sf_host,</if>
+            <if test="sfPort != null">sf_port,</if>
+            <if test="sfAk != null">sf_ak,</if>
+            <if test="sfSk != null">sf_sk,</if>
+            <if test="taskTimeout != null">task_timeout,</if>
+            <if test="redisHost != null">redis_host,</if>
+            <if test="redisPort != null">redis_port,</if>
+            <if test="redisDb != null">redis_db,</if>
+            <if test="redisPassword != null">redis_password,</if>
+            <if test="state != null">state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sfHost != null">#{sfHost},</if>
+            <if test="sfPort != null">#{sfPort},</if>
+            <if test="sfAk != null">#{sfAk},</if>
+            <if test="sfSk != null">#{sfSk},</if>
+            <if test="taskTimeout != null">#{taskTimeout},</if>
+            <if test="redisHost != null">#{redisHost},</if>
+            <if test="redisPort != null">#{redisPort},</if>
+            <if test="redisDb != null">#{redisDb},</if>
+            <if test="redisPassword != null">#{redisPassword},</if>
+            <if test="state != null">#{state},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBkAgentConfig" parameterType="BkAgentConfig">
+        update bk_agent_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sfHost != null">sf_host = #{sfHost},</if>
+            <if test="sfPort != null">sf_port = #{sfPort},</if>
+            <if test="sfAk != null">sf_ak = #{sfAk},</if>
+            <if test="sfSk != null">sf_sk = #{sfSk},</if>
+            <if test="taskTimeout != null">task_timeout = #{taskTimeout},</if>
+            <if test="redisHost != null">redis_host = #{redisHost},</if>
+            <if test="redisPort != null">redis_port = #{redisPort},</if>
+            <if test="redisDb != null">redis_db = #{redisDb},</if>
+            <if test="redisPassword != null">redis_password = #{redisPassword},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBkAgentConfigById" parameterType="Long">
+        delete from bk_agent_config where id = #{id}
+    </delete>
+
+    <delete id="deleteBkAgentConfigByIds" parameterType="String">
+        delete from bk_agent_config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,6 +1,15 @@
 package com.backup.server.core.domain;
 
-public class BuzMessage {
-    String type;
+import com.alibaba.fastjson2.JSONObject;
+import lombok.Data;
 
+@Data
+public class BuzMessage {
+    String eventType;
+    Object data;
+
+    public BuzMessage(JSONObject msg) {
+        eventType = msg.getString("eventType");
+        data = msg.get("data");
+    }
 }
