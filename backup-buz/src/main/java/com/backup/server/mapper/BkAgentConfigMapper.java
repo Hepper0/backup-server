@@ -18,6 +18,7 @@ public interface BkAgentConfigMapper
      * @return 代理配置
      */
     public BkAgentConfig selectBkAgentConfigById(Long id);
+    public BkAgentConfig selectAvailableBkAgentConfig();
 
     /**
      * 查询代理配置列表

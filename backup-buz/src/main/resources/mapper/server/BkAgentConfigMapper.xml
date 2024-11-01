@@ -24,6 +24,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, sf_host, sf_port, sf_ak, sf_sk, task_timeout, redis_host, redis_port, redis_db, redis_password, state, create_time, update_time from bk_agent_config
     </sql>
 
+    <select id="selectAvailableBkAgentConfig" resultMap="BkAgentConfigResult">
+        <include refid="selectBkAgentConfigVo"/>
+        <where>
+            state = 1 limit 1
+            order by create_time
+        </where>
+    </select>
+
     <select id="selectBkAgentConfigList" parameterType="BkAgentConfig" resultMap="BkAgentConfigResult">
         <include refid="selectBkAgentConfigVo"/>
         <where>

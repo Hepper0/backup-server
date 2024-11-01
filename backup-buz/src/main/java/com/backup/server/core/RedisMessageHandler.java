@@ -8,10 +8,9 @@ import com.backup.server.core.domain.AgentTaskInfo;
 import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkAgent;
+import com.backup.server.domain.BkAgentConfig;
 import com.backup.server.domain.BkTask;
-import com.backup.server.service.IAgentService;
-import com.backup.server.service.IBkAgentService;
-import com.backup.server.service.IBkTaskService;
+import com.backup.server.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +28,12 @@ public class RedisMessageHandler {
 
     @Resource
     IBkTaskService taskService;
+
+    @Resource
+    IBkAgentConfigService configService;
+
+    @Resource
+    IBkAgentSchedulerService agentSchedulerService;
 
     public void handleMessage(String msg) {
         MessageHandler handler;
@@ -67,8 +72,8 @@ public class RedisMessageHandler {
                         Message message = (Message)msg;
                         log.info("收到消息: {}", message.toString());
                         if (message.getType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
-                            JSONObject respJson = handleResponse(message.getPayload());
-                            Message respMsg = messageHandler.createResponseMessage(respJson);
+                            Object respObj = handleResponse(message);
+                            Message respMsg = messageHandler.createResponseMessage(respObj);
                             log.info("回复消息: {}", respMsg);
                             messageHandler.response(respMsg.toString());
                         } else if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_PUSH) {
@@ -148,14 +153,16 @@ public class RedisMessageHandler {
         }
     }
 
-    public JSONObject handleResponse(Object payload) {
-        JSONObject json = (JSONObject) payload;
+    public Object handleResponse(Object message) {
+        Message msg = (Message)message;
+        String ip = msg.getIp();
+        JSONObject json = (JSONObject) msg.getPayload();
         BuzMessage buzMessage = new BuzMessage(json);
         switch (buzMessage.getEventType()) {
             case "config":
-                break;
+                return configService.selectAvailableBkAgentConfig();
             case "scheduler":
-                break;
+                return agentSchedulerService.selectBkAgentSchedulerByIP(ip);
         }
         return null;
     }

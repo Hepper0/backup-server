@@ -32,6 +32,12 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
         return bkAgentSchedulerMapper.selectBkAgentSchedulerById(id);
     }
 
+    @Override
+    public BkAgentScheduler selectBkAgentSchedulerByIP(String ip)
+    {
+        return bkAgentSchedulerMapper.selectBkAgentSchedulerByIP(ip);
+    }
+
     /**
      * 查询【请填写功能名称】列表
      *

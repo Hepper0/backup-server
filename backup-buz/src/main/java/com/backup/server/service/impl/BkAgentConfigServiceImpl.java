@@ -32,6 +32,11 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
         return bkAgentConfigMapper.selectBkAgentConfigById(id);
     }
 
+    @Override
+    public BkAgentConfig selectAvailableBkAgentConfig() {
+        return bkAgentConfigMapper.selectAvailableBkAgentConfig();
+    }
+
     /**
      * 查询【请填写功能名称】列表
      *

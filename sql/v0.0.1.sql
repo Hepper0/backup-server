@@ -76,7 +76,7 @@ create table bk_agent_config(
     redis_port varchar(10),
     redis_db varchar(5),
     redis_password varchar(50),
-    state int default 0,
+    state int default 1,
     create_time datetime default now(),
     update_time datetime
 );
