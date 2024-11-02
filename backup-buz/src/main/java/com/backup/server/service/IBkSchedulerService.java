@@ -18,6 +18,7 @@ public interface IBkSchedulerService
      * @return 备份计划
      */
     public BkScheduler selectBkSchedulerBySchedulerId(Long schedulerId);
+    public BkScheduler selectBkSchedulerByIP(String ip);
 
     /**
      * 查询备份计划列表

@@ -28,7 +28,7 @@ import com.backup.common.core.page.TableDataInfo;
  * @date 2024-11-02
  */
 @RestController
-@RequestMapping("/system/config")
+@RequestMapping("/server/config")
 public class BkAgentConfigController extends BaseController
 {
     @Autowired

@@ -5,6 +5,9 @@ import com.backup.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 备份计划对象 bk_scheduler
  *
@@ -150,5 +153,20 @@ public class BkScheduler extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("updateBy", getUpdateBy())
             .toString();
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("schedulerId", getSchedulerId());
+        map.put("name", getName());
+        map.put("min", getMin());
+        map.put("hour", getHour());
+        map.put("day", getDay());
+        map.put("mon", getMon());
+        map.put("week", getWeek());
+        map.put("status", getStatus());
+        map.put("remark", getRemark());
+        map.put("createTime", getCreateTime());
+        return map;
     }
 }

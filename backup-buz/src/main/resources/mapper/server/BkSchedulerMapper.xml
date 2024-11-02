@@ -25,6 +25,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select scheduler_id, name, min, hour, day, mon, week, status, remark, deleted, create_time, create_by, update_time, update_by from bk_scheduler
     </sql>
 
+    <select id="selectBkSchedulerByIP" parameterType="String" resultMap="BkSchedulerResult">
+        select c.scheduler_id, c.name, c.min, c.hour, c.day, c.mon, c.week, c.status, c.remark, c.create_time
+        from bk_agent_scheduler a
+                 inner join bk_agent b on a.agent_id = b.agent_id and b.deleted = 0
+                 inner join bk_scheduler c on a.scheduler = c.scheduler_id and c.deleted = 0
+        where a.deleted = 0 and b.ip = #{ip}
+    </select>
+
     <select id="selectBkSchedulerList" parameterType="BkScheduler" resultMap="BkSchedulerResult">
         <include refid="selectBkSchedulerVo"/>
         <where>

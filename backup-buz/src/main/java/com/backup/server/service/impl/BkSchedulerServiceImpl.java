@@ -32,6 +32,13 @@ public class BkSchedulerServiceImpl implements IBkSchedulerService
         return bkSchedulerMapper.selectBkSchedulerBySchedulerId(schedulerId);
     }
 
+    @Override
+    public BkScheduler selectBkSchedulerByIP(String ip)
+    {
+        return bkSchedulerMapper.selectBkSchedulerByIP(ip);
+    }
+
+
     /**
      * 查询备份计划列表
      *

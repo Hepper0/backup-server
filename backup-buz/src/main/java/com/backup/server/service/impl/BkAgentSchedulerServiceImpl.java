@@ -9,7 +9,7 @@ import com.backup.server.domain.BkAgentScheduler;
 import com.backup.server.service.IBkAgentSchedulerService;
 
 /**
- * 【请填写功能名称】Service业务层处理
+ * 代理计划Service业务层处理
  *
  * @author author
  * @date 2024-11-02
@@ -21,10 +21,10 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     private BkAgentSchedulerMapper bkAgentSchedulerMapper;
 
     /**
-     * 查询【请填写功能名称】
+     * 查询代理计划
      *
-     * @param id 【请填写功能名称】主键
-     * @return 【请填写功能名称】
+     * @param id 代理计划主键
+     * @return 代理计划
      */
     @Override
     public BkAgentScheduler selectBkAgentSchedulerById(Long id)
@@ -32,17 +32,11 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
         return bkAgentSchedulerMapper.selectBkAgentSchedulerById(id);
     }
 
-    @Override
-    public BkAgentScheduler selectBkAgentSchedulerByIP(String ip)
-    {
-        return bkAgentSchedulerMapper.selectBkAgentSchedulerByIP(ip);
-    }
-
     /**
-     * 查询【请填写功能名称】列表
+     * 查询代理计划列表
      *
-     * @param bkAgentScheduler 【请填写功能名称】
-     * @return 【请填写功能名称】
+     * @param bkAgentScheduler 代理计划
+     * @return 代理计划
      */
     @Override
     public List<BkAgentScheduler> selectBkAgentSchedulerList(BkAgentScheduler bkAgentScheduler)
@@ -51,9 +45,9 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     }
 
     /**
-     * 新增【请填写功能名称】
+     * 新增代理计划
      *
-     * @param bkAgentScheduler 【请填写功能名称】
+     * @param bkAgentScheduler 代理计划
      * @return 结果
      */
     @Override
@@ -64,9 +58,9 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改代理计划
      *
-     * @param bkAgentScheduler 【请填写功能名称】
+     * @param bkAgentScheduler 代理计划
      * @return 结果
      */
     @Override
@@ -77,9 +71,9 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     }
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除代理计划
      *
-     * @param ids 需要删除的【请填写功能名称】主键
+     * @param ids 需要删除的代理计划主键
      * @return 结果
      */
     @Override
@@ -89,9 +83,9 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     }
 
     /**
-     * 删除【请填写功能名称】信息
+     * 删除代理计划信息
      *
-     * @param id 【请填写功能名称】主键
+     * @param id 代理计划主键
      * @return 结果
      */
     @Override

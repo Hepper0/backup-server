@@ -18,7 +18,6 @@ public interface IBkAgentSchedulerService
      * @return 代理计划
      */
     public BkAgentScheduler selectBkAgentSchedulerById(Long id);
-    public BkAgentScheduler selectBkAgentSchedulerByIP(String ip);
 
     /**
      * 查询代理计划列表

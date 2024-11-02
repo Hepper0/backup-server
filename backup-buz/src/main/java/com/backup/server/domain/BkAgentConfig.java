@@ -5,6 +5,9 @@ import com.backup.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 代理配置对象 bk_agent_config
  *
@@ -175,5 +178,22 @@ public class BkAgentConfig extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", getId());
+        map.put("sfHost", getSfHost());
+        map.put("sfPort", getSfPort());
+        map.put("sfAk", getSfAk());
+        map.put("sfSk", getSfSk());
+        map.put("taskTimeout", getTaskTimeout());
+        map.put("redisHost", getRedisHost());
+        map.put("redisPort", getRedisPort());
+        map.put("redisDb", getRedisDb());
+        map.put("redisPassword", getRedisPassword());
+        map.put("state", getState());
+        map.put("createTime", getCreateTime());
+        return map;
     }
 }

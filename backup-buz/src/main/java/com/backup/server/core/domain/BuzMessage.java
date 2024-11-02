@@ -12,4 +12,9 @@ public class BuzMessage {
         eventType = msg.getString("eventType");
         data = msg.get("data");
     }
+
+    public BuzMessage(String eventType, Object data) {
+        this.eventType = eventType;
+        this.data = data;
+    }
 }

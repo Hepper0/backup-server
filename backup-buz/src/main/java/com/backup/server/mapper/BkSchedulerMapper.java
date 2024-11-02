@@ -19,6 +19,9 @@ public interface BkSchedulerMapper
      */
     public BkScheduler selectBkSchedulerBySchedulerId(Long schedulerId);
 
+    public BkScheduler selectBkSchedulerByIP(String ip);
+
+
     /**
      * 查询备份计划列表
      *

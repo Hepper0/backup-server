@@ -60,7 +60,7 @@ public class MessageHandler {
         sendMessage(message);
     }
 
-    public void response(String data) {
+    public void response(Object data) {
         Message message = createResponseMessage(data);
         sendMessage(message);
     }

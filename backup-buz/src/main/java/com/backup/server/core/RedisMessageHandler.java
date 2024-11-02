@@ -33,9 +33,9 @@ public class RedisMessageHandler {
     IBkAgentConfigService configService;
 
     @Resource
-    IBkAgentSchedulerService agentSchedulerService;
+    IBkSchedulerService agentSchedulerService;
 
-    public void handleMessage(String msg) {
+    public synchronized void handleMessage(String msg) {
         MessageHandler handler;
         JSONObject msgJson = JSONObject.parseObject(msg);
         com.backup.server.core.domain.Message message = new com.backup.server.core.domain.Message();
@@ -68,14 +68,15 @@ public class RedisMessageHandler {
                 try {
                     MessageHandler messageHandler = MessageHandler.getHandler(ip);
                     Object msg = messageHandler.takeMessage();
+                    log.info("收到消息: {}", msg.toString());
                     if (msg instanceof Message) {
                         Message message = (Message)msg;
-                        log.info("收到消息: {}", message.toString());
                         if (message.getType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
                             Object respObj = handleResponse(message);
-                            Message respMsg = messageHandler.createResponseMessage(respObj);
-                            log.info("回复消息: {}", respMsg);
-                            messageHandler.response(respMsg.toString());
+                            log.info("回复消息: {}", respObj);
+
+
+                            messageHandler.response(respObj);
                         } else if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_PUSH) {
                             /*
                             1. Agent 空间不足
@@ -160,9 +161,11 @@ public class RedisMessageHandler {
         BuzMessage buzMessage = new BuzMessage(json);
         switch (buzMessage.getEventType()) {
             case "config":
-                return configService.selectAvailableBkAgentConfig();
+                buzMessage.setData(configService.selectAvailableBkAgentConfig().toMap());
+                return buzMessage;
             case "scheduler":
-                return agentSchedulerService.selectBkAgentSchedulerByIP(ip);
+                buzMessage.setData(agentSchedulerService.selectBkSchedulerByIP(ip).toMap());
+                return buzMessage;
         }
         return null;
     }
