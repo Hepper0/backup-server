@@ -43,6 +43,12 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
         return bkAgentResourceMapper.selectBkAgentResourceList(bkAgentResource);
     }
 
+    @Override
+    public List<String> selectBkAgentResourceListByIP(String ip)
+    {
+        return bkAgentResourceMapper.selectBkAgentResourceListByIP(ip);
+    }
+
     /**
      * 新增【请填写功能名称】
      *

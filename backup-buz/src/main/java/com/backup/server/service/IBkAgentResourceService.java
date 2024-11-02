@@ -4,7 +4,7 @@ import java.util.List;
 import com.backup.server.domain.BkAgentResource;
 
 /**
- * 【请填写功能名称】Service接口
+ * 备份资源Service接口
  * 
  * @author author
  * @date 2024-10-29
@@ -12,49 +12,51 @@ import com.backup.server.domain.BkAgentResource;
 public interface IBkAgentResourceService 
 {
     /**
-     * 查询【请填写功能名称】
+     * 查询备份资源
      * 
-     * @param id 【请填写功能名称】主键
-     * @return 【请填写功能名称】
+     * @param id 备份资源主键
+     * @return 备份资源
      */
     public BkAgentResource selectBkAgentResourceById(Long id);
 
     /**
-     * 查询【请填写功能名称】列表
+     * 查询备份资源列表
      * 
-     * @param bkAgentResource 【请填写功能名称】
-     * @return 【请填写功能名称】集合
+     * @param bkAgentResource 备份资源
+     * @return 备份资源集合
      */
     public List<BkAgentResource> selectBkAgentResourceList(BkAgentResource bkAgentResource);
 
+    public List<String> selectBkAgentResourceListByIP(String ip);
+
     /**
-     * 新增【请填写功能名称】
+     * 新增备份资源
      * 
-     * @param bkAgentResource 【请填写功能名称】
+     * @param bkAgentResource 备份资源
      * @return 结果
      */
     public int insertBkAgentResource(BkAgentResource bkAgentResource);
 
     /**
-     * 修改【请填写功能名称】
+     * 修改备份资源
      * 
-     * @param bkAgentResource 【请填写功能名称】
+     * @param bkAgentResource 备份资源
      * @return 结果
      */
     public int updateBkAgentResource(BkAgentResource bkAgentResource);
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除备份资源
      * 
-     * @param ids 需要删除的【请填写功能名称】主键集合
+     * @param ids 需要删除的备份资源主键集合
      * @return 结果
      */
     public int deleteBkAgentResourceByIds(Long[] ids);
 
     /**
-     * 删除【请填写功能名称】信息
+     * 删除备份资源信息
      * 
-     * @param id 【请填写功能名称】主键
+     * @param id 备份资源主键
      * @return 结果
      */
     public int deleteBkAgentResourceById(Long id);

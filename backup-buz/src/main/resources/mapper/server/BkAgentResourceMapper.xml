@@ -27,6 +27,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectBkAgentResourceListByIP" parameterType="String" resultType="String">
+        select resource_id from bk_agent_resource a
+        inner join bk_agent b on a.agent_id = b.agent_id and b.deleted = 0 and b.ip = #{ip}
+    </select>
+
     <insert id="insertBkAgentResource" parameterType="BkAgentResource" useGeneratedKeys="true" keyProperty="id">
         insert into bk_agent_resource
         <trim prefix="(" suffix=")" suffixOverrides=",">

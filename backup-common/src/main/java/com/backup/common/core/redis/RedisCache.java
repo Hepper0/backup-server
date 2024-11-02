@@ -266,7 +266,7 @@ public class RedisCache
         return redisTemplate.keys(pattern);
     }
 
-    public void publish(String channel, String message) {
+    public void publish(String channel, Object message) {
         redisTemplate.convertAndSend(channel, message);
     }
 }

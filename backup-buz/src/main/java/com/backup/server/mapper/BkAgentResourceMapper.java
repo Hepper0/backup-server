@@ -27,6 +27,8 @@ public interface BkAgentResourceMapper
      */
     public List<BkAgentResource> selectBkAgentResourceList(BkAgentResource bkAgentResource);
 
+    public List<String> selectBkAgentResourceListByIP(String ip);
+
     /**
      * 新增备份资源
      * 

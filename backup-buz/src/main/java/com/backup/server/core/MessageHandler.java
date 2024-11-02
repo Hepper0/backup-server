@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
+// 抽象消息发送与处理逻辑
 @Slf4j
 public class MessageHandler {
 
@@ -87,6 +88,7 @@ public class MessageHandler {
     }
 
     private void sendMessage(Message message) {
+        System.out.println(message.toString());
         sender.publish(getAgentTopic(), message.toString());
     }
 
@@ -115,19 +117,19 @@ public class MessageHandler {
 
     public Message createPushMessage(Object data) {
         Message message = createMessage(data);
-        message.setType(MESSAGE_TYPE_PUSH);
+        message.setMsgType(MESSAGE_TYPE_PUSH);
         return message;
     }
 
     public Message createRequestMessage(Object data) {
         Message message = createMessage(data);
-        message.setType(MESSAGE_TYPE_REQUEST);
+        message.setMsgType(MESSAGE_TYPE_REQUEST);
         return message;
     }
 
     public Message createResponseMessage(Object data) {
         Message message = createMessage(data);
-        message.setType(MESSAGE_TYPE_RESPONSE);
+        message.setMsgType(MESSAGE_TYPE_RESPONSE);
         return message;
     }
 

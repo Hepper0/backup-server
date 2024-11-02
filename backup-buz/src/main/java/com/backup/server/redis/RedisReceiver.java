@@ -28,6 +28,7 @@ public class RedisReceiver implements MessageListener {
         if (event.equals(RedisConfig.REDIS_KEY_EXPIRE_EVENT.replace("*", redisDatabase))) {
             messageHandler.handleExpiredKey(data);
         } else {
+            // 常规消息处理入口
             messageHandler.handleMessage(data);
         }
 

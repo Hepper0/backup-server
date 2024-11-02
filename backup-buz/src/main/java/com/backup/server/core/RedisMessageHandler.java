@@ -2,13 +2,9 @@ package com.backup.server.core;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.core.redis.RedisCache;
-import com.backup.common.utils.bean.BeanUtils;
-import com.backup.server.core.domain.AgentInfo;
-import com.backup.server.core.domain.AgentTaskInfo;
 import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkAgent;
-import com.backup.server.domain.BkAgentConfig;
 import com.backup.server.domain.BkTask;
 import com.backup.server.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+// 实际的消息处理逻辑
 @Slf4j
 @Component
 public class RedisMessageHandler {
@@ -33,17 +30,22 @@ public class RedisMessageHandler {
     IBkAgentConfigService configService;
 
     @Resource
-    IBkSchedulerService agentSchedulerService;
+    IBkSchedulerService schedulerService;
 
+    @Resource
+    IBkAgentResourceService agentResourceService;
+
+    // 处理Redis订阅的消息
     public synchronized void handleMessage(String msg) {
         MessageHandler handler;
         JSONObject msgJson = JSONObject.parseObject(msg);
         com.backup.server.core.domain.Message message = new com.backup.server.core.domain.Message();
         String ip = msgJson.getString("ip");
-        int messageType = msgJson.getInteger("type");
+        int messageType = msgJson.getInteger("msgType");
         message.setIp(ip);
-        message.setType(messageType);
+        message.setMsgType(messageType);
         message.setPayload(msgJson.getJSONObject("payload"));
+        // JAVA端向Agent发送消息后的响应消息
         if (messageType == MessageHandler.MESSAGE_TYPE_RESPONSE) {
             String uuid = msgJson.getString("uuid");
             handler = MessageHandler.MSG_MAP.get(uuid);
@@ -52,6 +54,7 @@ public class RedisMessageHandler {
             }
             handler.handleResponseMessage(message);
         } else {
+            // Agent主动向JAVA端推送的消息
             handler = MessageHandler.getHandler(ip);
             if (handler == null) {
                 handler = new MessageHandler(ip, redisCache);
@@ -61,8 +64,9 @@ public class RedisMessageHandler {
         }
     }
 
+    // 监听Agent主动向JAVA端推送的消息
     public void listen(String ip) {
-        // 每个handler需要一个线程阻塞等待Agent的消息, 并且可以掉用到Service
+        // 每个handler需要一个线程阻塞等待Agent的消息, 并且可以调用到Service
         new Thread(() -> {
             while(true) {
                 try {
@@ -71,13 +75,11 @@ public class RedisMessageHandler {
                     log.info("收到消息: {}", msg.toString());
                     if (msg instanceof Message) {
                         Message message = (Message)msg;
-                        if (message.getType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
+                        if (message.getMsgType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
                             Object respObj = handleResponse(message);
                             log.info("回复消息: {}", respObj);
-
-
                             messageHandler.response(respObj);
-                        } else if (((Message) msg).getType() == MessageHandler.MESSAGE_TYPE_PUSH) {
+                        } else if (((Message) msg).getMsgType() == MessageHandler.MESSAGE_TYPE_PUSH) {
                             /*
                             1. Agent 空间不足
                             2. 任务完成
@@ -88,6 +90,7 @@ public class RedisMessageHandler {
                             String eventType = buzMessage.getEventType();
                             JSONObject eventData = (JSONObject)buzMessage.getData();
                             switch (eventType) {
+                                // Agent上线
                                 case "agentInfo":
                                     BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
                                     if (agent == null) {
@@ -97,6 +100,7 @@ public class RedisMessageHandler {
                                         agentService.insertBkAgent(newAgent);
                                     }
                                     break;
+                                // Task 运行消息同步
                                 case "taskInfo":
                                     String taskId = eventData.getString("taskId");
                                     BkTask task = taskService.selectBkTaskByTaskId(taskId);
@@ -122,6 +126,7 @@ public class RedisMessageHandler {
                             }
                         }
                     } else {
+                        // 收到非格式化的消息都认为是退出
                         break;
                     }
                 } catch (Exception e) {
@@ -154,6 +159,7 @@ public class RedisMessageHandler {
         }
     }
 
+    // 响应处理逻辑
     public Object handleResponse(Object message) {
         Message msg = (Message)message;
         String ip = msg.getIp();
@@ -162,10 +168,13 @@ public class RedisMessageHandler {
         switch (buzMessage.getEventType()) {
             case "config":
                 buzMessage.setData(configService.selectAvailableBkAgentConfig().toMap());
-                return buzMessage;
+                return buzMessage.toMap();
             case "scheduler":
-                buzMessage.setData(agentSchedulerService.selectBkSchedulerByIP(ip).toMap());
-                return buzMessage;
+                buzMessage.setData(schedulerService.selectBkSchedulerByIP(ip).toMap());
+                return buzMessage.toMap();
+            case "resource":
+                buzMessage.setData(agentResourceService.selectBkAgentResourceListByIP(ip));
+                return buzMessage.toMap();
         }
         return null;
     }
