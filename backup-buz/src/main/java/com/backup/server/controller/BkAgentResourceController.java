@@ -41,9 +41,15 @@ public class BkAgentResourceController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(BkAgentResource bkAgentResource)
     {
-        startPage();
-        List<BkAgentResource> list = bkAgentResourceService.selectBkAgentResourceList(bkAgentResource);
-        return getDataTable(list);
+        String agentIP = bkAgentResource.getAgentIP();
+        List<BkAgentResource> list;
+        if (agentIP != null){
+            return getDataTable(bkAgentResourceService.selectBkAgentResourceListByIP(agentIP));
+        } else {
+            startPage();
+            list = bkAgentResourceService.selectBkAgentResourceList(bkAgentResource);
+            return getDataTable(list);
+        }
     }
 
     /**
@@ -100,5 +106,11 @@ public class BkAgentResourceController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(bkAgentResourceService.deleteBkAgentResourceByIds(ids));
+    }
+
+    @PreAuthorize("@ss.hasPermi('server:resource:edit')")
+    @PostMapping
+    public AjaxResult send2Agent(String ip) {
+        return toAjax(bkAgentResourceService.send2Agent(ip));
     }
 }

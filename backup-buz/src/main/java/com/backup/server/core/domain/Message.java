@@ -22,4 +22,10 @@ public class Message {
         json.put("payload", getPayload());
         return json.toString();
     }
+
+    // 如果是响应数据, 直接获取返回数据
+    public Object getData() {
+        BuzMessage buzMessage = new BuzMessage((JSONObject) payload);
+        return buzMessage.getData();
+    }
 }

@@ -76,54 +76,11 @@ public class RedisMessageHandler {
                     if (msg instanceof Message) {
                         Message message = (Message)msg;
                         if (message.getMsgType() == MessageHandler.MESSAGE_TYPE_REQUEST) {
-                            Object respObj = handleResponse(message);
+                            Object respObj = handleRequest(message);
                             log.info("回复消息: {}", respObj);
                             messageHandler.response(respObj);
                         } else if (((Message) msg).getMsgType() == MessageHandler.MESSAGE_TYPE_PUSH) {
-                            /*
-                            1. Agent 空间不足
-                            2. 任务完成
-                            3. Agent启动
-                            */
-                            JSONObject data = (JSONObject) ((Message) msg).getPayload();
-                            BuzMessage buzMessage = new BuzMessage(data);
-                            String eventType = buzMessage.getEventType();
-                            JSONObject eventData = (JSONObject)buzMessage.getData();
-                            switch (eventType) {
-                                // Agent上线
-                                case "agentInfo":
-                                    BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
-                                    if (agent == null) {
-                                        BkAgent newAgent = new BkAgent();
-                                        newAgent.setIp(ip);
-                                        newAgent.setHostname(eventData.getString("hostname"));
-                                        agentService.insertBkAgent(newAgent);
-                                    }
-                                    break;
-                                // Task 运行消息同步
-                                case "taskInfo":
-                                    String taskId = eventData.getString("taskId");
-                                    BkTask task = taskService.selectBkTaskByTaskId(taskId);
-                                    if (task == null) {
-                                        task = new BkTask();
-                                        task.setTaskId(taskId);
-                                        task.setBackupPath(eventData.getString("backupPath"));
-                                        task.setTarget(eventData.getString("target"));
-                                        task.setStartTime(eventData.getDate("startTime"));
-                                        task.setEndTime(eventData.getDate("endTime"));
-                                        task.setStatus(eventData.getLong("status"));
-                                        task.setRemark(eventData.getString("remark"));
-                                        taskService.insertBkTask(task);
-                                    } else {
-                                        task.setEndTime(eventData.getDate("endTime"));
-                                        task.setStatus(eventData.getLong("status"));
-                                        task.setRemark(eventData.getString("remark"));
-                                        taskService.updateBkTask(task);
-                                    }
-                                    break;
-                                case "alarm":
-                                    break;
-                            }
+                            handlePush(ip, msg);
                         }
                     } else {
                         // 收到非格式化的消息都认为是退出
@@ -159,8 +116,8 @@ public class RedisMessageHandler {
         }
     }
 
-    // 响应处理逻辑
-    public Object handleResponse(Object message) {
+    // 处理收到的请求逻辑
+    public Object handleRequest(Object message) {
         Message msg = (Message)message;
         String ip = msg.getIp();
         JSONObject json = (JSONObject) msg.getPayload();
@@ -177,6 +134,54 @@ public class RedisMessageHandler {
                 return buzMessage.toMap();
         }
         return null;
+    }
+
+    // 处理收到的推送消息
+    public void handlePush(String ip, Object msg) {
+        /*
+        1. Agent 空间不足
+        2. 任务完成
+        3. Agent启动
+        */
+        JSONObject data = (JSONObject) ((Message) msg).getPayload();
+        BuzMessage buzMessage = new BuzMessage(data);
+        String eventType = buzMessage.getEventType();
+        JSONObject eventData = (JSONObject)buzMessage.getData();
+        switch (eventType) {
+            // Agent上线
+            case "agentInfo":
+                BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
+                if (agent == null) {
+                    BkAgent newAgent = new BkAgent();
+                    newAgent.setIp(ip);
+                    newAgent.setHostname(eventData.getString("hostname"));
+                    agentService.insertBkAgent(newAgent);
+                }
+                break;
+            // Task 运行消息同步
+            case "taskInfo":
+                String taskId = eventData.getString("taskId");
+                BkTask task = taskService.selectBkTaskByTaskId(taskId);
+                if (task == null) {
+                    task = new BkTask();
+                    task.setTaskId(taskId);
+                    task.setBackupPath(eventData.getString("backupPath"));
+                    task.setTarget(eventData.getString("target"));
+                    task.setStartTime(eventData.getDate("startTime"));
+                    task.setEndTime(eventData.getDate("endTime"));
+                    task.setStatus(eventData.getLong("status"));
+                    task.setRemark(eventData.getString("remark"));
+                    taskService.insertBkTask(task);
+                } else {
+                    task.setEndTime(eventData.getDate("endTime"));
+                    task.setStatus(eventData.getLong("status"));
+                    task.setRemark(eventData.getString("remark"));
+                    taskService.updateBkTask(task);
+                }
+                break;
+            case "alarm":
+                break;
+        }
     }
 
 }

@@ -1,11 +1,15 @@
 package com.backup.server.service.impl;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.alibaba.fastjson2.JSONObject;
+import com.backup.server.core.MessageHandler;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentResourceMapper;
 import com.backup.server.domain.BkAgentResource;
 import com.backup.server.service.IBkAgentResourceService;
+
+import javax.annotation.Resource;
 
 /**
  * 【请填写功能名称】Service业务层处理
@@ -16,7 +20,7 @@ import com.backup.server.service.IBkAgentResourceService;
 @Service
 public class BkAgentResourceServiceImpl implements IBkAgentResourceService
 {
-    @Autowired
+    @Resource
     private BkAgentResourceMapper bkAgentResourceMapper;
 
     /**
@@ -95,5 +99,12 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     public int deleteBkAgentResourceById(Long id)
     {
         return bkAgentResourceMapper.deleteBkAgentResourceById(id);
+    }
+
+    @Override
+    public boolean send2Agent(String ip) {
+        List<String> resourceList = bkAgentResourceMapper.selectBkAgentResourceListByIP(ip);
+        JSONObject resp = (JSONObject) MessageHandler.request(JSONObject.toJSONString(resourceList), ip);
+        return resp.getInteger("code") == 0;
     }
 }

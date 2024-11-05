@@ -25,6 +25,18 @@ public class BkAgentResource extends BaseEntity
     @Excel(name = "资源Id", readConverterExp = "$column.readConverterExp()")
     private String resourceId;
 
+    private String agentIP;
+
+    public void setAgentIP(String agentIP)
+    {
+        this.agentIP = agentIP;
+    }
+
+    public String getAgentIP()
+    {
+        return agentIP;
+    }
+
     public void setId(Long id)
     {
         this.id = id;

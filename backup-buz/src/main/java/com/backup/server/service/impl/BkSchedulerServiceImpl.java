@@ -1,12 +1,21 @@
 package com.backup.server.service.impl;
 
 import java.util.List;
+
+import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
+import com.backup.server.config.RedisConfig;
+import com.backup.server.core.MessageHandler;
+import com.backup.server.core.domain.Message;
+import com.backup.server.domain.BkSchedulerBroadcast;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkSchedulerMapper;
 import com.backup.server.domain.BkScheduler;
 import com.backup.server.service.IBkSchedulerService;
+
+import javax.annotation.Resource;
 
 /**
  * 备份计划Service业务层处理
@@ -14,11 +23,16 @@ import com.backup.server.service.IBkSchedulerService;
  * @author author
  * @date 2024-10-28
  */
+
+@Slf4j
 @Service
 public class BkSchedulerServiceImpl implements IBkSchedulerService
 {
-    @Autowired
+    @Resource
     private BkSchedulerMapper bkSchedulerMapper;
+
+    @Resource
+    RedisCache redis;
 
     /**
      * 查询备份计划
@@ -99,5 +113,17 @@ public class BkSchedulerServiceImpl implements IBkSchedulerService
     public int deleteBkSchedulerBySchedulerId(Long schedulerId)
     {
         return bkSchedulerMapper.deleteBkSchedulerBySchedulerId(schedulerId);
+    }
+
+    public void broadcast(BkScheduler bkScheduler) {
+        Message message = new Message();
+        message.setPayload(bkScheduler.toMap());
+        redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message);
+    }
+
+    public void broadcast(BkSchedulerBroadcast bkSchedulerBroadcast) {
+        BkScheduler bkScheduler = bkSchedulerBroadcast.getBkScheduler();
+        List<String> ipList = bkSchedulerBroadcast.getIpList();
+        MessageHandler.broadcast(bkScheduler.toMap(), ipList);
     }
 }

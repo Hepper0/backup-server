@@ -2,6 +2,7 @@ package com.backup.server.service;
 
 import java.util.List;
 import com.backup.server.domain.BkScheduler;
+import com.backup.server.domain.BkSchedulerBroadcast;
 
 /**
  * 备份计划Service接口
@@ -27,6 +28,8 @@ public interface IBkSchedulerService
      * @return 备份计划集合
      */
     public List<BkScheduler> selectBkSchedulerList(BkScheduler bkScheduler);
+    public void broadcast(BkScheduler bkScheduler);
+    public void broadcast(BkSchedulerBroadcast bkSchedulerBroadcast);
 
     /**
      * 新增备份计划

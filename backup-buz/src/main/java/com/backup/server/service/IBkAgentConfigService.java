@@ -20,6 +20,8 @@ public interface IBkAgentConfigService
     public BkAgentConfig selectBkAgentConfigById(Long id);
     public BkAgentConfig selectAvailableBkAgentConfig();
 
+    public void broadcast(BkAgentConfig bkAgentConfig);
+
     /**
      * 查询代理配置列表
      *

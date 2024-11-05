@@ -4,12 +4,14 @@ import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.uuid.IdUtils;
 import com.backup.server.config.RedisConfig;
+import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -56,7 +58,7 @@ public class MessageHandler {
         log.info("{} teardown", ip);
     }
 
-    public void push(String data) {
+    public void push(Object data) {
         Message message = createMessage(data);
         sendMessage(message);
     }
@@ -70,7 +72,7 @@ public class MessageHandler {
         return pendingMessage.take();
     }
 
-    public Message request(String data) {
+    public Message request(Object data) {
         countDownLatch = new CountDownLatch(1);
         Message message = createRequestMessage(data);
         try {
@@ -88,7 +90,6 @@ public class MessageHandler {
     }
 
     private void sendMessage(Message message) {
-        System.out.println(message.toString());
         sender.publish(getAgentTopic(), message.toString());
     }
 
@@ -135,6 +136,36 @@ public class MessageHandler {
 
     public static MessageHandler getHandler(String ip) {
         return agentReceiverMap.get(ip);
+    }
+
+    public static void broadcast(Object data, List<String> ipList) {
+        for (String ip : ipList) {
+            MessageHandler handler = getHandler(ip);
+            if (handler != null) {
+                handler.push(data);
+            } else {
+                log.warn("The handler of {} is not found!", ip);
+            }
+        }
+    }
+
+    public static Object request(Object data, String ip) {
+        MessageHandler handler = getHandler(ip);
+        if (handler != null) {
+            Message respMsg = handler.request(data);
+            return respMsg.getData();
+        } else {
+            throw new RuntimeException("handler of "+ ip + " is not found");
+        }
+    }
+
+    public static void push(Object data, String ip) {
+        MessageHandler handler = getHandler(ip);
+        if (handler != null) {
+            handler.push(data);
+        } else {
+            throw new RuntimeException("handler of "+ ip + " is not found");
+        }
     }
 
     public void setSender(RedisCache redisCache) {

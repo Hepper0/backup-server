@@ -60,4 +60,6 @@ public interface IBkAgentResourceService
      * @return 结果
      */
     public int deleteBkAgentResourceById(Long id);
+
+    public boolean send2Agent(String ip);
 }

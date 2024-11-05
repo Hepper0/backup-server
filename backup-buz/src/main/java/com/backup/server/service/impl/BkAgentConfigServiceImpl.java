@@ -1,12 +1,18 @@
 package com.backup.server.service.impl;
 
 import java.util.List;
+
+import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
+import com.backup.server.config.RedisConfig;
+import com.backup.server.core.domain.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentConfigMapper;
 import com.backup.server.domain.BkAgentConfig;
 import com.backup.server.service.IBkAgentConfigService;
+
+import javax.annotation.Resource;
 
 /**
  * 【请填写功能名称】Service业务层处理
@@ -17,8 +23,11 @@ import com.backup.server.service.IBkAgentConfigService;
 @Service
 public class BkAgentConfigServiceImpl implements IBkAgentConfigService
 {
-    @Autowired
+    @Resource
     private BkAgentConfigMapper bkAgentConfigMapper;
+
+    @Resource
+    RedisCache redis;
 
     /**
      * 查询【请填写功能名称】
@@ -35,6 +44,13 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     @Override
     public BkAgentConfig selectAvailableBkAgentConfig() {
         return bkAgentConfigMapper.selectAvailableBkAgentConfig();
+    }
+
+    @Override
+    public void broadcast(BkAgentConfig bkAgentConfig) {
+        Message message = new Message();
+        message.setPayload(bkAgentConfig.toMap());
+        redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message);
     }
 
     /**

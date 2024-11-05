@@ -37,7 +37,7 @@ public class BkAgentConfigController extends BaseController
     /**
      * 查询代理配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:list')")
+    @PreAuthorize("@ss.hasPermi('server:config:list')")
     @GetMapping("/list")
     public TableDataInfo list(BkAgentConfig bkAgentConfig)
     {
@@ -49,7 +49,7 @@ public class BkAgentConfigController extends BaseController
     /**
      * 导出代理配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:export')")
+    @PreAuthorize("@ss.hasPermi('server:config:export')")
     @Log(title = "代理配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BkAgentConfig bkAgentConfig)
@@ -62,7 +62,7 @@ public class BkAgentConfigController extends BaseController
     /**
      * 获取代理配置详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:config:query')")
+    @PreAuthorize("@ss.hasPermi('server:config:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +72,7 @@ public class BkAgentConfigController extends BaseController
     /**
      * 新增代理配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:add')")
+    @PreAuthorize("@ss.hasPermi('server:config:add')")
     @Log(title = "代理配置", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BkAgentConfig bkAgentConfig)
@@ -83,7 +83,7 @@ public class BkAgentConfigController extends BaseController
     /**
      * 修改代理配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:edit')")
+    @PreAuthorize("@ss.hasPermi('server:config:edit')")
     @Log(title = "代理配置", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BkAgentConfig bkAgentConfig)
@@ -94,11 +94,23 @@ public class BkAgentConfigController extends BaseController
     /**
      * 删除代理配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:remove')")
+    @PreAuthorize("@ss.hasPermi('server:config:remove')")
     @Log(title = "代理配置", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(bkAgentConfigService.deleteBkAgentConfigByIds(ids));
+    }
+
+    /**
+     * 广播代理配置
+     */
+    @PreAuthorize("@ss.hasPermi('server:config:add')")
+    @Log(title = "代理配置", businessType = BusinessType.OTHER)
+    @PostMapping
+    public AjaxResult broadcast(@RequestBody BkAgentConfig bkAgentConfig)
+    {
+        bkAgentConfigService.broadcast(bkAgentConfig);
+        return success();
     }
 }

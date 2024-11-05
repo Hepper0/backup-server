@@ -2,6 +2,9 @@ package com.backup.server.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.backup.server.domain.BkAgentConfig;
+import com.backup.server.domain.BkSchedulerBroadcast;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +103,29 @@ public class BkSchedulerController extends BaseController
     public AjaxResult remove(@PathVariable Long[] schedulerIds)
     {
         return toAjax(bkSchedulerService.deleteBkSchedulerBySchedulerIds(schedulerIds));
+    }
+
+    /**
+     * 广播代理配置
+     */
+    @PreAuthorize("@ss.hasPermi('server:scheduler:broadcast')")
+    @Log(title = "备份计划", businessType = BusinessType.OTHER)
+    @PostMapping
+    public AjaxResult broadcast(@RequestBody BkScheduler bkScheduler)
+    {
+        bkSchedulerService.broadcast(bkScheduler);
+        return success();
+    }
+
+    /**
+     * 局部广播代理配置
+     */
+    @PreAuthorize("@ss.hasPermi('server:scheduler:broadcast')")
+    @Log(title = "备份计划", businessType = BusinessType.OTHER)
+    @PostMapping
+    public AjaxResult broadcast(@RequestBody BkSchedulerBroadcast bkSchedulerBroadcast)
+    {
+        bkSchedulerService.broadcast(bkSchedulerBroadcast);
+        return success();
     }
 }
