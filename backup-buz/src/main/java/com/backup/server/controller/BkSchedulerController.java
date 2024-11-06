@@ -110,7 +110,7 @@ public class BkSchedulerController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('server:scheduler:broadcast')")
     @Log(title = "备份计划", businessType = BusinessType.OTHER)
-    @PostMapping
+    @PostMapping("/broadcast")
     public AjaxResult broadcast(@RequestBody BkScheduler bkScheduler)
     {
         bkSchedulerService.broadcast(bkScheduler);
@@ -122,7 +122,7 @@ public class BkSchedulerController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('server:scheduler:broadcast')")
     @Log(title = "备份计划", businessType = BusinessType.OTHER)
-    @PostMapping
+    @PostMapping("/local-area-broadcast")
     public AjaxResult broadcast(@RequestBody BkSchedulerBroadcast bkSchedulerBroadcast)
     {
         bkSchedulerService.broadcast(bkSchedulerBroadcast);

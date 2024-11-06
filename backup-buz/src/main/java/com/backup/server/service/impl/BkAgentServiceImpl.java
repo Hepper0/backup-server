@@ -1,7 +1,10 @@
 package com.backup.server.service.impl;
 
 import java.util.List;
+
+import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
+import com.backup.server.config.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentMapper;
@@ -19,8 +22,11 @@ import javax.annotation.Resource;
 @Service
 public class BkAgentServiceImpl implements IBkAgentService
 {
-    @Autowired
+    @Resource
     private BkAgentMapper bkAgentMapper;
+
+    @Resource
+    private RedisCache redis;
 
     /**
      * 查询代理
@@ -31,7 +37,9 @@ public class BkAgentServiceImpl implements IBkAgentService
     @Override
     public BkAgent selectBkAgentByAgentId(Long agentId)
     {
-        return bkAgentMapper.selectBkAgentByAgentId(agentId);
+        BkAgent agent = bkAgentMapper.selectBkAgentByAgentId(agentId);
+        setStatus(agent);
+        return agent;
     }
 
     @Override
@@ -49,7 +57,10 @@ public class BkAgentServiceImpl implements IBkAgentService
     @Override
     public List<BkAgent> selectBkAgentList(BkAgent bkAgent)
     {
-        return bkAgentMapper.selectBkAgentList(bkAgent);
+
+        List<BkAgent> agents = bkAgentMapper.selectBkAgentList(bkAgent);
+        agents.forEach(this::setStatus);
+        return agents;
     }
 
     /**
@@ -101,4 +112,16 @@ public class BkAgentServiceImpl implements IBkAgentService
     {
         return bkAgentMapper.deleteBkAgentByAgentId(agentId);
     }
+
+    private Integer getAgentStatusFromCache(String ip) {
+        return redis.getCacheObject(RedisConfig.REDIS_AGENT_ONLINE_PREFIX + ip);
+    }
+
+    private void setStatus(BkAgent agent) {
+        Integer status = getAgentStatusFromCache(agent.getIp());
+        if (status != null){
+            agent.setStatus(new Long(status));
+        }
+    }
+
 }

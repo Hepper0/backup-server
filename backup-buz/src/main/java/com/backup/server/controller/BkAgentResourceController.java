@@ -109,7 +109,7 @@ public class BkAgentResourceController extends BaseController
     }
 
     @PreAuthorize("@ss.hasPermi('server:resource:edit')")
-    @PostMapping
+    @PostMapping("/send")
     public AjaxResult send2Agent(String ip) {
         return toAjax(bkAgentResourceService.send2Agent(ip));
     }

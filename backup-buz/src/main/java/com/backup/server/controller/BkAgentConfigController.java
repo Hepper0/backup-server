@@ -107,7 +107,7 @@ public class BkAgentConfigController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('server:config:add')")
     @Log(title = "代理配置", businessType = BusinessType.OTHER)
-    @PostMapping
+    @PostMapping("/broadcast")
     public AjaxResult broadcast(@RequestBody BkAgentConfig bkAgentConfig)
     {
         bkAgentConfigService.broadcast(bkAgentConfig);
