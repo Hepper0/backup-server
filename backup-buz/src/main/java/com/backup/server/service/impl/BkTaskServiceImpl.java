@@ -1,12 +1,16 @@
 package com.backup.server.service.impl;
 
 import java.util.List;
+
+import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backup.server.config.RedisConfig;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkTaskMapper;
 import com.backup.server.domain.BkTask;
 import com.backup.server.service.IBkTaskService;
+
+import javax.annotation.Resource;
 
 /**
  * 备份任务Service业务层处理
@@ -17,8 +21,11 @@ import com.backup.server.service.IBkTaskService;
 @Service
 public class BkTaskServiceImpl implements IBkTaskService
 {
-    @Autowired
+    @Resource
     private BkTaskMapper bkTaskMapper;
+
+    @Resource
+    private RedisCache redis;
 
     /**
      * 查询备份任务
@@ -41,7 +48,9 @@ public class BkTaskServiceImpl implements IBkTaskService
     @Override
     public List<BkTask> selectBkTaskList(BkTask bkTask)
     {
-        return bkTaskMapper.selectBkTaskList(bkTask);
+        List<BkTask> tasks = bkTaskMapper.selectBkTaskList(bkTask);
+        tasks.forEach(this::setStatus);
+        return tasks;
     }
 
     /**
@@ -92,5 +101,16 @@ public class BkTaskServiceImpl implements IBkTaskService
     public int deleteBkTaskByTaskId(Long taskId)
     {
         return bkTaskMapper.deleteBkTaskByTaskId(taskId);
+    }
+
+    private Integer getAgentStatusFromCache(String agentIP, String taskId) {
+        return redis.getCacheObject(RedisConfig.REDIS_AGENT_RUNNING_PREFIX + agentIP + ":" + taskId);
+    }
+
+    private void setStatus(BkTask bkTask) {
+        Integer status = getAgentStatusFromCache(bkTask.getAgentIP(), bkTask.getTaskId());
+        if (status != null){
+            bkTask.setStatus(new Long(status));
+        }
     }
 }

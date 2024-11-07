@@ -5,6 +5,7 @@ import java.util.Date;
 import com.backup.common.core.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.backup.common.annotation.Excel;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,12 +15,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author author
  * @date 2024-10-28
  */
+@Data
 public class BkTask extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 任务Id */
     private String taskId;
+
+    /** agentIP */
+    private String agentIP;
 
     /** 备份目标 */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
@@ -45,69 +50,69 @@ public class BkTask extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
-    public void setTaskId(String taskId)
-    {
-        this.taskId = taskId;
-    }
-
-    public String getTaskId()
-    {
-        return taskId;
-    }
-    public void setTarget(String target)
-    {
-        this.target = target;
-    }
-
-    public String getTarget()
-    {
-        return target;
-    }
-    public void setBackupPath(String backupPath)
-    {
-        this.backupPath = backupPath;
-    }
-
-    public String getBackupPath()
-    {
-        return backupPath;
-    }
-    public void setStartTime(Date startTime)
-    {
-        this.startTime = startTime;
-    }
-
-    public Date getStartTime()
-    {
-        return startTime;
-    }
-    public void setEndTime(Date endTime)
-    {
-        this.endTime = endTime;
-    }
-
-    public Date getEndTime()
-    {
-        return endTime;
-    }
-    public void setStatus(Long status)
-    {
-        this.status = status;
-    }
-
-    public Long getStatus()
-    {
-        return status;
-    }
-    public void setDeleted(Long deleted)
-    {
-        this.deleted = deleted;
-    }
-
-    public Long getDeleted()
-    {
-        return deleted;
-    }
+//    public void setTaskId(String taskId)
+//    {
+//        this.taskId = taskId;
+//    }
+//
+//    public String getTaskId()
+//    {
+//        return taskId;
+//    }
+//    public void setTarget(String target)
+//    {
+//        this.target = target;
+//    }
+//
+//    public String getTarget()
+//    {
+//        return target;
+//    }
+//    public void setBackupPath(String backupPath)
+//    {
+//        this.backupPath = backupPath;
+//    }
+//
+//    public String getBackupPath()
+//    {
+//        return backupPath;
+//    }
+//    public void setStartTime(Date startTime)
+//    {
+//        this.startTime = startTime;
+//    }
+//
+//    public Date getStartTime()
+//    {
+//        return startTime;
+//    }
+//    public void setEndTime(Date endTime)
+//    {
+//        this.endTime = endTime;
+//    }
+//
+//    public Date getEndTime()
+//    {
+//        return endTime;
+//    }
+//    public void setStatus(Long status)
+//    {
+//        this.status = status;
+//    }
+//
+//    public Long getStatus()
+//    {
+//        return status;
+//    }
+//    public void setDeleted(Long deleted)
+//    {
+//        this.deleted = deleted;
+//    }
+//
+//    public Long getDeleted()
+//    {
+//        return deleted;
+//    }
 
     @Override
     public String toString() {
