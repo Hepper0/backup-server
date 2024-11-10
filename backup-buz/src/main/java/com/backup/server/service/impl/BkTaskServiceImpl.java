@@ -103,14 +103,17 @@ public class BkTaskServiceImpl implements IBkTaskService
         return bkTaskMapper.deleteBkTaskByTaskId(taskId);
     }
 
-    private Integer getAgentStatusFromCache(String agentIP, String taskId) {
+    private Integer getTaskStatusFromCache(String agentIP, String taskId) {
         return redis.getCacheObject(RedisConfig.REDIS_AGENT_RUNNING_PREFIX + agentIP + ":" + taskId);
     }
 
     private void setStatus(BkTask bkTask) {
-        Integer status = getAgentStatusFromCache(bkTask.getAgentIP(), bkTask.getTaskId());
-        if (status != null){
-            bkTask.setStatus(new Long(status));
+        // 为空表示任务还没有得到运行结果,查询缓存是否在运行中
+        if (bkTask.getStatus() == null) {
+            Integer status = getTaskStatusFromCache(bkTask.getAgentIP(), bkTask.getTaskId());
+            if (status != null){
+                bkTask.setStatus(new Long(status));
+            }
         }
     }
 }

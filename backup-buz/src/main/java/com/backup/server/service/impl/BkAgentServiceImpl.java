@@ -1,11 +1,12 @@
 package com.backup.server.service.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
 import com.backup.server.config.RedisConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backup.server.config.StatusConfig;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentMapper;
 import com.backup.server.domain.BkAgent;
@@ -118,8 +119,18 @@ public class BkAgentServiceImpl implements IBkAgentService
     }
 
     private void setStatus(BkAgent agent) {
-        Integer status = getAgentStatusFromCache(agent.getIp());
+        String ip = agent.getIp();
+        Integer status = getAgentStatusFromCache(ip);
         if (status != null){
+            // 在线状态, 获取是否有任务在运行
+            if (status.equals(StatusConfig.SERVER_ONLINE)) {
+                Collection<String> keys = redis.keys(RedisConfig.REDIS_AGENT_RUNNING_PREFIX + ip + ":*");
+                if (keys.size() > 0) {
+                    agent.setTaskStatus(new Long(StatusConfig.SERVER_STATUS_RUNNING));
+                } else {
+                    agent.setTaskStatus(new Long(StatusConfig.SERVER_STATUS_IDLE));
+                }
+            }
             agent.setStatus(new Long(status));
         }
     }

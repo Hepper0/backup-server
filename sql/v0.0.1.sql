@@ -164,3 +164,23 @@ values(5004,'代理配置删除', 5000, '4',  '#', '', 1, 0, 'F', '0', '0', 'ser
 
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
 values(5005,'代理配置导出', 5000, '5',  '#', '', 1, 0, 'F', '0', '0', 'server:config:export',       '#', 'admin', sysdate(), '', null, '');
+
+-- 菜单 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(6000, '备份目标资源', '5', '5', 'resource', 'agent/resource/index', 1, 0, 'C', '0', '0', 'server:resource:list', '#', 'admin', sysdate(), '', null, '备份目标资源菜单');
+
+-- 按钮 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(6001, '备份目标资源查询', 6000, '1',  '#', '', 1, 0, 'F', '0', '0', 'server:resource:query',        '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(6002, '备份目标资源新增', 6000, '2',  '#', '', 1, 0, 'F', '0', '0', 'server:resource:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(6003, '备份目标资源修改', 6000, '3',  '#', '', 1, 0, 'F', '0', '0', 'server:resource:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(6004, '备份目标资源删除', 6000, '4',  '#', '', 1, 0, 'F', '0', '0', 'server:resource:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(6005, '备份目标资源导出', 6000, '5',  '#', '', 1, 0, 'F', '0', '0', 'server:resource:export',       '#', 'admin', sysdate(), '', null, '');
