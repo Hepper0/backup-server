@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.backup.server.core.MessageHandler;
+import com.backup.server.domain.BkAgent;
+import com.backup.server.mapper.BkAgentMapper;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentResourceMapper;
 import com.backup.server.domain.BkAgentResource;
@@ -22,6 +24,9 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
 {
     @Resource
     private BkAgentResourceMapper bkAgentResourceMapper;
+
+    @Resource
+    private BkAgentMapper agentMapper;
 
     /**
      * 查询【请填写功能名称】
@@ -44,6 +49,11 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     @Override
     public List<BkAgentResource> selectBkAgentResourceList(BkAgentResource bkAgentResource)
     {
+        if (bkAgentResource.getAgentId().contains(".")) {
+            String agentIP = bkAgentResource.getAgentId();
+            BkAgent agent = agentMapper.selectBkAgentByAgentIP(agentIP);
+            bkAgentResource.setAgentId(agent.getAgentId() + "");
+        }
         return bkAgentResourceMapper.selectBkAgentResourceList(bkAgentResource);
     }
 
@@ -62,6 +72,11 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     @Override
     public int insertBkAgentResource(BkAgentResource bkAgentResource)
     {
+        if (bkAgentResource.getAgentId().contains(".")) {
+            String agentIP = bkAgentResource.getAgentId();
+            BkAgent agent = agentMapper.selectBkAgentByAgentIP(agentIP);
+            bkAgentResource.setAgentId(agent.getAgentId() + "");
+        }
         return bkAgentResourceMapper.insertBkAgentResource(bkAgentResource);
     }
 

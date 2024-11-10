@@ -2,6 +2,7 @@ package com.backup.server.domain;
 
 import com.backup.common.annotation.Excel;
 import com.backup.common.core.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author author
  * @date 2024-10-27
  */
+@Data
 public class BkAgent extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -30,55 +32,57 @@ public class BkAgent extends BaseEntity
     @Excel(name = "状态", readConverterExp = "$column.readConverterExp()")
     private Long status;
 
+    private Long taskStatus;
+
     /** $column.columnComment */
 //    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
-    public void setAgentId(Long agentId)
-    {
-        this.agentId = agentId;
-    }
-
-    public Long getAgentId()
-    {
-        return agentId;
-    }
-    public void setHostname(String hostname)
-    {
-        this.hostname = hostname;
-    }
-
-    public String getHostname()
-    {
-        return hostname;
-    }
-    public void setIp(String ip)
-    {
-        this.ip = ip;
-    }
-
-    public String getIp()
-    {
-        return ip;
-    }
-    public void setStatus(Long status)
-    {
-        this.status = status;
-    }
-
-    public Long getStatus()
-    {
-        return status;
-    }
-    public void setDeleted(Long deleted)
-    {
-        this.deleted = deleted;
-    }
-
-    public Long getDeleted()
-    {
-        return deleted;
-    }
+//    public void setAgentId(Long agentId)
+//    {
+//        this.agentId = agentId;
+//    }
+//
+//    public Long getAgentId()
+//    {
+//        return agentId;
+//    }
+//    public void setHostname(String hostname)
+//    {
+//        this.hostname = hostname;
+//    }
+//
+//    public String getHostname()
+//    {
+//        return hostname;
+//    }
+//    public void setIp(String ip)
+//    {
+//        this.ip = ip;
+//    }
+//
+//    public String getIp()
+//    {
+//        return ip;
+//    }
+//    public void setStatus(Long status)
+//    {
+//        this.status = status;
+//    }
+//
+//    public Long getStatus()
+//    {
+//        return status;
+//    }
+//    public void setDeleted(Long deleted)
+//    {
+//        this.deleted = deleted;
+//    }
+//
+//    public Long getDeleted()
+//    {
+//        return deleted;
+//    }
 
     @Override
     public String toString() {
