@@ -37,6 +37,8 @@ public interface BkAgentResourceMapper
      */
     public int insertBkAgentResource(BkAgentResource bkAgentResource);
 
+    public int insertBkAgentResources(List<BkAgentResource> bkAgentResources);
+
     /**
      * 修改备份资源
      * 

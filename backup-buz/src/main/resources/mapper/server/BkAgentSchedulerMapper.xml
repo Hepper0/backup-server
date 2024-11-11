@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BkAgentScheduler" id="BkAgentSchedulerResult">
         <result property="id"    column="id"    />
         <result property="agentId"    column="agent_id"    />
+        <result property="agentIP"    column="ip"    />
         <result property="scheduler"    column="scheduler"    />
         <result property="deleted"    column="deleted"    />
         <result property="createTime"    column="create_time"    />
@@ -20,8 +21,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectBkAgentSchedulerList" parameterType="BkAgentScheduler" resultMap="BkAgentSchedulerResult">
-        <include refid="selectBkAgentSchedulerVo"/>
+        select s.id, s.agent_id, a.ip, s.scheduler from bk_agent_scheduler s
+        inner join bk_agent a on s.agent_id = a.agent_id and a.deleted = 0
         <where>
+            s.deleted = 0
             <if test="agentId != null  and agentId != ''"> and agent_id = #{agentId}</if>
             <if test="scheduler != null  and scheduler != ''"> and scheduler = #{scheduler}</if>
             <if test="deleted != null "> and deleted = #{deleted}</if>

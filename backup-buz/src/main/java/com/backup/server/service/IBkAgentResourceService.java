@@ -36,6 +36,7 @@ public interface IBkAgentResourceService
      * @return 结果
      */
     public int insertBkAgentResource(BkAgentResource bkAgentResource);
+    public int insertBkAgentResources(String agentId, List<BkAgentResource> bkAgentResources);
 
     /**
      * 修改备份资源

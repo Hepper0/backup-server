@@ -17,6 +17,9 @@ create table bk_agent_resource(
                       agent_id varchar(100),
                       resource_id varchar(100)
 );
+CREATE UNIQUE INDEX index_name ON bk_agent_resource (agent_id, resource_id);
+
+
 
 drop table if exists bk_task;
 create table bk_task(
@@ -64,6 +67,8 @@ create table bk_agent_scheduler(
                      update_time datetime,
                      update_by varchar(64)
 );
+CREATE UNIQUE INDEX index_name ON bk_agent_scheduler (agent_id, scheduler);
+
 
 drop if exists bk_agent_config;
 create table bk_agent_config(

@@ -1,7 +1,14 @@
 package com.backup.server.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
+import com.backup.common.config.ProjectConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +38,7 @@ import com.backup.common.core.page.TableDataInfo;
 @RequestMapping("/server/resource")
 public class BkAgentResourceController extends BaseController
 {
-    @Autowired
+    @Resource
     private IBkAgentResourceService bkAgentResourceService;
 
     /**
@@ -63,6 +70,29 @@ public class BkAgentResourceController extends BaseController
         List<BkAgentResource> list = bkAgentResourceService.selectBkAgentResourceList(bkAgentResource);
         ExcelUtil<BkAgentResource> util = new ExcelUtil<BkAgentResource>(BkAgentResource.class);
         util.exportExcel(response, list, "备份资源数据");
+    }
+
+    /**
+     * 导出备份资源列表
+     */
+    @PreAuthorize("@ss.hasPermi('server:resource:export')")
+    @Log(title = "备份资源", businessType = BusinessType.OTHER)
+    @PostMapping("/import")
+    public void importResource(@RequestBody BkAgentResource bkAgentResource)
+    {
+        ExcelUtil<BkAgentResource> util = new ExcelUtil<>(BkAgentResource.class);
+        String agentId = bkAgentResource.getAgentId();
+        String filename = bkAgentResource.getImportFilename();
+        System.out.println("agentId: " + agentId + ", filename: " + filename);
+        String filePath = ProjectConfig.getProfile()+ "/" + filename.replace("/profile", "");
+        try {
+            InputStream inputStream = new FileInputStream(filePath);
+            List<BkAgentResource> agentResources = util.importExcel(inputStream);
+            bkAgentResourceService.insertBkAgentResources(agentId, agentResources);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        success();
     }
 
     /**

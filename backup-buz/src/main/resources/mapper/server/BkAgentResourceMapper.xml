@@ -44,6 +44,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <insert id="insertBkAgentResources" parameterType="BkAgentResource" useGeneratedKeys="true" keyProperty="id">
+        insert into bk_agent_resource (agent_id, resource_id) values
+        <foreach item="it" collection="list" separator=",">
+            <trim prefix="(" suffix=")">
+                #{it.agentId}, #{it.resourceId}
+            </trim>
+        </foreach>
+
+    </insert>
+
     <update id="updateBkAgentResource" parameterType="BkAgentResource">
         update bk_agent_resource
         <trim prefix="SET" suffixOverrides=",">

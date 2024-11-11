@@ -467,7 +467,10 @@ public class ExcelUtil<T>
                         }
                         if (StringUtils.isNotEmpty(attr.readConverterExp()))
                         {
-                            val = reverseByExp(Convert.toStr(val), attr.readConverterExp(), attr.separator());
+                            String s = Convert.toStr(val);
+                            String exp = attr.readConverterExp();
+                            String sep = attr.separator();
+                            val = reverseByExp(s, exp, sep);
                         }
                         else if (StringUtils.isNotEmpty(attr.dictType()))
                         {

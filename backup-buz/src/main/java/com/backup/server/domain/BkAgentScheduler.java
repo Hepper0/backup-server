@@ -2,6 +2,7 @@ package com.backup.server.domain;
 
 import com.backup.common.annotation.Excel;
 import com.backup.common.core.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author author
  * @date 2024-11-02
  */
+@Data
 public class BkAgentScheduler extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -19,53 +21,54 @@ public class BkAgentScheduler extends BaseEntity
     private Long id;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "代理Id")
     private String agentId;
 
+    @Excel(name = "代理IP")
+    private String agentIP;
+
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "计划Id")
     private String scheduler;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-    public void setAgentId(String agentId)
-    {
-        this.agentId = agentId;
-    }
-
-    public String getAgentId()
-    {
-        return agentId;
-    }
-    public void setScheduler(String scheduler)
-    {
-        this.scheduler = scheduler;
-    }
-
-    public String getScheduler()
-    {
-        return scheduler;
-    }
-    public void setDeleted(Long deleted)
-    {
-        this.deleted = deleted;
-    }
-
-    public Long getDeleted()
-    {
-        return deleted;
-    }
+//    public void setId(Long id)
+//    {
+//        this.id = id;
+//    }
+//
+//    public Long getId()
+//    {
+//        return id;
+//    }
+//    public void setAgentId(String agentId)
+//    {
+//        this.agentId = agentId;
+//    }
+//
+//    public String getAgentId()
+//    {
+//        return agentId;
+//    }
+//    public void setScheduler(String scheduler)
+//    {
+//        this.scheduler = scheduler;
+//    }
+//
+//    public String getScheduler()
+//    {
+//        return scheduler;
+//    }
+//    public void setDeleted(Long deleted)
+//    {
+//        this.deleted = deleted;
+//    }
+//
+//    public Long getDeleted()
+//    {
+//        return deleted;
+//    }
 
     @Override
     public String toString() {

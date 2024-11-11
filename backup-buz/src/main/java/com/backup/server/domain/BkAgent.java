@@ -21,15 +21,13 @@ public class BkAgent extends BaseEntity
     private Long agentId;
 
     /** $column.columnComment */
-    @Excel(name = "Hostname", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "Hostname")
     private String hostname;
 
     /** $column.columnComment */
-    @Excel(name = "IP", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "IP")
     private String ip;
 
-    /** $column.columnComment */
-    @Excel(name = "状态", readConverterExp = "$column.readConverterExp()")
     private Long status;
 
     private Long taskStatus;

@@ -25,7 +25,6 @@ public class RedisListenerConfig {
 
     @Bean
     RedisMessageListenerContainer redisContainer(MessageListenerAdapter messageListenerAdapter) {
-        System.out.println("RedisMessageListenerContainer bean");
         final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(redisConnectionFactory);
         container.addMessageListener(messageListenerAdapter, Arrays.asList(
@@ -37,7 +36,6 @@ public class RedisListenerConfig {
 
     @Bean
     MessageListenerAdapter messageListenerAdapter() {
-        System.out.println("MessageListenerAdapter bean");
         return new MessageListenerAdapter(receiver, "onMessage");
     }
 

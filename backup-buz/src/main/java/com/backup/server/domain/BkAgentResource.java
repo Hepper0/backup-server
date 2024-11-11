@@ -20,14 +20,16 @@ public class BkAgentResource extends BaseEntity
     private Long id;
 
     /** 代理Id */
-    @Excel(name = "代理Id", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "代理Id")
     private String agentId; // 要兼容IP的查询条件， 所以设置为string类型
 
     /** 资源Id */
-    @Excel(name = "资源Id", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "资源Id")
     private String resourceId;
 
     private String agentIP;
+
+    private String importFilename;
 
 //    public void setAgentIP(String agentIP)
 //    {
