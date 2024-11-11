@@ -49,7 +49,7 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     @Override
     public List<BkAgentResource> selectBkAgentResourceList(BkAgentResource bkAgentResource)
     {
-        if (bkAgentResource.getAgentId().contains(".")) {
+        if (bkAgentResource.getAgentId() != null && bkAgentResource.getAgentId().contains(".")) {
             String agentIP = bkAgentResource.getAgentId();
             BkAgent agent = agentMapper.selectBkAgentByAgentIP(agentIP);
             bkAgentResource.setAgentId(agent.getAgentId() + "");
@@ -72,7 +72,7 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     @Override
     public int insertBkAgentResource(BkAgentResource bkAgentResource)
     {
-        if (bkAgentResource.getAgentId().contains(".")) {
+        if (bkAgentResource.getAgentId() != null && bkAgentResource.getAgentId().contains(".")) {
             String agentIP = bkAgentResource.getAgentId();
             BkAgent agent = agentMapper.selectBkAgentByAgentIP(agentIP);
             bkAgentResource.setAgentId(agent.getAgentId() + "");

@@ -8,6 +8,8 @@ import com.backup.server.mapper.BkAgentSchedulerMapper;
 import com.backup.server.domain.BkAgentScheduler;
 import com.backup.server.service.IBkAgentSchedulerService;
 
+import javax.annotation.Resource;
+
 /**
  * 代理计划Service业务层处理
  *
@@ -17,7 +19,7 @@ import com.backup.server.service.IBkAgentSchedulerService;
 @Service
 public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
 {
-    @Autowired
+    @Resource
     private BkAgentSchedulerMapper bkAgentSchedulerMapper;
 
     /**
