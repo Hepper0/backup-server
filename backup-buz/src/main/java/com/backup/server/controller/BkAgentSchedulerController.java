@@ -23,7 +23,7 @@ import com.backup.common.utils.poi.ExcelUtil;
 import com.backup.common.core.page.TableDataInfo;
 
 /**
- * 【请填写功能名称】Controller
+ * 备份计划代理配置Controller
  *
  * @author author
  * @date 2024-11-02
@@ -36,9 +36,9 @@ public class BkAgentSchedulerController extends BaseController
     private IBkAgentSchedulerService bkAgentSchedulerService;
 
     /**
-     * 查询【请填写功能名称】列表
+     * 查询备份计划代理配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:scheduler:list')")
+    @PreAuthorize("@ss.hasPermi('server:scheduler:list')")
     @GetMapping("/list")
     public TableDataInfo list(BkAgentScheduler bkAgentScheduler)
     {
@@ -48,22 +48,22 @@ public class BkAgentSchedulerController extends BaseController
     }
 
     /**
-     * 导出【请填写功能名称】列表
+     * 导出备份计划代理配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:scheduler:export')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('server:scheduler:export')")
+    @Log(title = "备份计划代理配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BkAgentScheduler bkAgentScheduler)
     {
         List<BkAgentScheduler> list = bkAgentSchedulerService.selectBkAgentSchedulerList(bkAgentScheduler);
         ExcelUtil<BkAgentScheduler> util = new ExcelUtil<BkAgentScheduler>(BkAgentScheduler.class);
-        util.exportExcel(response, list, "【请填写功能名称】数据");
+        util.exportExcel(response, list, "备份计划代理配置数据");
     }
 
     /**
-     * 获取【请填写功能名称】详细信息
+     * 获取备份计划代理配置详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:scheduler:query')")
+    @PreAuthorize("@ss.hasPermi('server:scheduler:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -71,10 +71,10 @@ public class BkAgentSchedulerController extends BaseController
     }
 
     /**
-     * 新增【请填写功能名称】
+     * 新增备份计划代理配置
      */
-    @PreAuthorize("@ss.hasPermi('system:scheduler:add')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('server:scheduler:add')")
+    @Log(title = "备份计划代理配置", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BkAgentScheduler bkAgentScheduler)
     {
@@ -82,10 +82,10 @@ public class BkAgentSchedulerController extends BaseController
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改备份计划代理配置
      */
-    @PreAuthorize("@ss.hasPermi('system:scheduler:edit')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('server:scheduler:edit')")
+    @Log(title = "备份计划代理配置", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BkAgentScheduler bkAgentScheduler)
     {
@@ -93,10 +93,10 @@ public class BkAgentSchedulerController extends BaseController
     }
 
     /**
-     * 删除【请填写功能名称】
+     * 删除备份计划代理配置
      */
-    @PreAuthorize("@ss.hasPermi('system:scheduler:remove')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('server:scheduler:remove')")
+    @Log(title = "备份计划代理配置", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

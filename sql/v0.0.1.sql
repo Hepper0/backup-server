@@ -86,15 +86,17 @@ create table bk_agent_config(
     create_time datetime default now(),
     update_time datetime
 );
+-- SCP测试环境配置
+insert into bk_agent_config (sf_host, sf_port, sf_ak, sf_sk, task_timeout, redis_db) values('10.38.19.113', '4430', '4a78f43ad3b94dc5bc20fae500200a2b', '31659b3c6e5e43eca0ebc611d4ed36b6', 3600, 0);
 
 
 -- 主菜单
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `remark`)
-VALUES (5, '代理管理', 0, 0, 'agent', NULL, '', '', 1, 0, 'M', '0', '0', '', 'agent', 'admin', '代理管理目录');
+VALUES (5, '代理管理', 0, 0, 'agent', NULL, '', '', 1, 0, 'M', '0', '0', '', 'tree', 'admin', '代理管理目录');
 
 -- 菜单
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, remark)
-VALUES (2000, '代理', 5, 1, 'agent', 'agent/agent/index', NULL, '', 1, 0, 'C', '0', '0', 'server:agent:list', '#', 'admin', '代理菜单');
+VALUES (2000, '代理管理', 5, 1, 'agent', 'agent/agent/index', NULL, '', 1, 0, 'C', '0', '0', 'server:agent:list', 'tree', 'admin', '代理菜单');
 
 -- 按钮
 INSERT INTO `bk`.`sys_menu`(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `route_name`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`)
@@ -110,7 +112,7 @@ VALUES (2005, '代理导出', 2000, 5, '#', '', NULL, '', 1, 0, 'F', '0', '0', '
 
 -- 菜单
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values(3000, '备份任务', '5', '2', 'task', 'agent/task/index', 1, 0, 'C', '0', '0', 'server:task:list', '#', 'admin', sysdate(), '', null, '备份任务菜单');
+values(3000, '备份任务', '5', '2', 'task', 'agent/task/index', 1, 0, 'C', '0', '0', 'server:task:list', 'job', 'admin', sysdate(), '', null, '备份任务菜单');
 
 -- 按钮
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
@@ -130,7 +132,7 @@ values(3005, '备份任务导出', 3000, '5',  '#', '', 1, 0, 'F', '0', '0', 'se
 
 -- 菜单
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values(4000, '备份计划', '5', '3', 'scheduler', 'agent/scheduler/index', 1, 0, 'C', '0', '0', 'server:scheduler:list', '#', 'admin', sysdate(), '', null, '备份计划菜单');
+values(4000, '备份计划', '5', '3', 'scheduler', 'agent/scheduler/index', 1, 0, 'C', '0', '0', 'server:scheduler:list', 'build', 'admin', sysdate(), '', null, '备份计划菜单');
 
 
 -- 按钮
@@ -151,7 +153,7 @@ values(4005, '备份计划导出', 4000, '5',  '#', '', 1, 0, 'F', '0', '0', 'se
 
 -- 菜单 SQL
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values(5000, '代理配置', '5', '4', 'config', 'agent/config/index', 1, 0, 'C', '0', '0', 'server:config:list', '#', 'admin', sysdate(), '', null, '代理配置菜单');
+values(5000, '代理配置', '5', '4', 'config', 'agent/config/index', 1, 0, 'C', '0', '0', 'server:config:list', 'edit', 'admin', sysdate(), '', null, '代理配置菜单');
 
 
 -- 按钮 SQL
@@ -172,7 +174,7 @@ values(5005,'代理配置导出', 5000, '5',  '#', '', 1, 0, 'F', '0', '0', 'ser
 
 -- 菜单 SQL
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values(6000, '备份目标资源', '5', '5', 'resource', 'agent/resource/index', 1, 0, 'C', '0', '0', 'server:resource:list', '#', 'admin', sysdate(), '', null, '备份目标资源菜单');
+values(6000, '备份目标资源', '5', '5', 'resource', 'agent/resource/index', 1, 0, 'C', '0', '0', 'server:resource:list', 'tree-table', 'admin', sysdate(), '', null, '备份目标资源菜单');
 
 -- 按钮 SQL
 insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)

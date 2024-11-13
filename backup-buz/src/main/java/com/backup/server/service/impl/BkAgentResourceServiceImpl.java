@@ -14,7 +14,7 @@ import com.backup.server.service.IBkAgentResourceService;
 import javax.annotation.Resource;
 
 /**
- * 【请填写功能名称】Service业务层处理
+ * 代理备份资源配置Service业务层处理
  *
  * @author author
  * @date 2024-10-29
@@ -29,10 +29,10 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     private BkAgentMapper agentMapper;
 
     /**
-     * 查询【请填写功能名称】
+     * 查询代理备份资源配置
      *
-     * @param id 【请填写功能名称】主键
-     * @return 【请填写功能名称】
+     * @param id 代理备份资源配置主键
+     * @return 代理备份资源配置
      */
     @Override
     public BkAgentResource selectBkAgentResourceById(Long id)
@@ -41,10 +41,10 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     }
 
     /**
-     * 查询【请填写功能名称】列表
+     * 查询代理备份资源配置列表
      *
-     * @param bkAgentResource 【请填写功能名称】
-     * @return 【请填写功能名称】
+     * @param bkAgentResource 代理备份资源配置
+     * @return 代理备份资源配置
      */
     @Override
     public List<BkAgentResource> selectBkAgentResourceList(BkAgentResource bkAgentResource)
@@ -64,9 +64,9 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     }
 
     /**
-     * 新增【请填写功能名称】
+     * 新增代理备份资源配置
      *
-     * @param bkAgentResource 【请填写功能名称】
+     * @param bkAgentResource 代理备份资源配置
      * @return 结果
      */
     @Override
@@ -94,9 +94,9 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改代理备份资源配置
      *
-     * @param bkAgentResource 【请填写功能名称】
+     * @param bkAgentResource 代理备份资源配置
      * @return 结果
      */
     @Override
@@ -106,9 +106,9 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     }
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除代理备份资源配置
      *
-     * @param ids 需要删除的【请填写功能名称】主键
+     * @param ids 需要删除的代理备份资源配置主键
      * @return 结果
      */
     @Override
@@ -118,9 +118,9 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     }
 
     /**
-     * 删除【请填写功能名称】信息
+     * 删除代理备份资源配置信息
      *
-     * @param id 【请填写功能名称】主键
+     * @param id 代理备份资源配置主键
      * @return 结果
      */
     @Override

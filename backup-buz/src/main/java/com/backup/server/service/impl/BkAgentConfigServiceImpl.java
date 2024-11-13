@@ -15,7 +15,7 @@ import com.backup.server.service.IBkAgentConfigService;
 import javax.annotation.Resource;
 
 /**
- * 【请填写功能名称】Service业务层处理
+ * 代理配置Service业务层处理
  *
  * @author author
  * @date 2024-11-02
@@ -30,10 +30,10 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     RedisCache redis;
 
     /**
-     * 查询【请填写功能名称】
+     * 查询代理配置
      *
-     * @param id 【请填写功能名称】主键
-     * @return 【请填写功能名称】
+     * @param id 代理配置主键
+     * @return 代理配置
      */
     @Override
     public BkAgentConfig selectBkAgentConfigById(Long id)
@@ -54,10 +54,10 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     }
 
     /**
-     * 查询【请填写功能名称】列表
+     * 查询代理配置列表
      *
-     * @param bkAgentConfig 【请填写功能名称】
-     * @return 【请填写功能名称】
+     * @param bkAgentConfig 代理配置
+     * @return 代理配置
      */
     @Override
     public List<BkAgentConfig> selectBkAgentConfigList(BkAgentConfig bkAgentConfig)
@@ -66,9 +66,9 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     }
 
     /**
-     * 新增【请填写功能名称】
+     * 新增代理配置
      *
-     * @param bkAgentConfig 【请填写功能名称】
+     * @param bkAgentConfig 代理配置
      * @return 结果
      */
     @Override
@@ -79,9 +79,9 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改代理配置
      *
-     * @param bkAgentConfig 【请填写功能名称】
+     * @param bkAgentConfig 代理配置
      * @return 结果
      */
     @Override
@@ -92,9 +92,9 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     }
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除代理配置
      *
-     * @param ids 需要删除的【请填写功能名称】主键
+     * @param ids 需要删除的代理配置主键
      * @return 结果
      */
     @Override
@@ -104,9 +104,9 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     }
 
     /**
-     * 删除【请填写功能名称】信息
+     * 删除代理配置信息
      *
-     * @param id 【请填写功能名称】主键
+     * @param id 代理配置主键
      * @return 结果
      */
     @Override
