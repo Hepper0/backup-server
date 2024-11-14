@@ -102,4 +102,11 @@ public class BkAgentSchedulerController extends BaseController
     {
         return toAjax(bkAgentSchedulerService.deleteBkAgentSchedulerByIds(ids));
     }
+
+    @Log(title = "备份计划代理配置", businessType = BusinessType.OTHER)
+    @DeleteMapping("/sync")
+    public AjaxResult syncScheduler(@RequestBody BkAgentScheduler bkAgentScheduler)
+    {
+        return toAjax(bkAgentSchedulerService.syncBkAgentScheduler(bkAgentScheduler));
+    }
 }

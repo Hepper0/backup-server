@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBkTaskVo">
-        select task_id, target, backup_path, start_time, end_time, status, remark, deleted, create_time, create_by, update_time, update_by from bk_task
+        select task_id, target, ip, backup_path, start_time, end_time, status, remark, deleted, create_time, create_by, update_time, update_by from bk_task
     </sql>
 
     <select id="selectBkTaskList" parameterType="BkTask" resultMap="BkTaskResult">
@@ -31,11 +31,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="agentIP != null  and agentIP != ''"> and ip = #{agentIP}</if>
             <if test="target != null  and target != ''"> and target = #{target}</if>
             <if test="backupPath != null  and backupPath != ''"> and backup_path = #{backupPath}</if>
-            <if test="startTime != null "> and start_time = #{startTime}</if>
-            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="startTime != null "> and date(start_time) = #{startTime}</if>
+            <if test="endTime != null "> and date(end_time) = #{endTime}</if>
             <if test="status != null "> and status = #{status}</if>
             <if test="deleted != null "> and deleted = #{deleted}</if>
         </where>
+        order by start_time desc
     </select>
 
     <select id="selectBkTaskByTaskId" parameterType="String" resultMap="BkTaskResult">

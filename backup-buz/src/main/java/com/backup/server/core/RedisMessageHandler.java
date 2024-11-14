@@ -104,11 +104,17 @@ public class RedisMessageHandler {
                 messageHandler.teardown();
                 break;
             case "running":
-                String dev;
+                String taskId;
                 if (keyArr.length > 3) {
-                    dev = keyArr[3];
-                    log.info(dev + "running abort");
-                    // todo record running exception
+                    taskId = keyArr[3];
+                    BkTask task = taskService.selectBkTaskByTaskId(taskId);
+                    // 任务未正常结束, 但是运行状态中止了
+                    if (task != null && task.getStatus() == 0) {
+                        log.info("task " + taskId + " aborts unexpectedly");
+                        task.setStatus(-1L);
+                        task.setRemark("Aborts unexpectedly");
+                        taskService.updateBkTask(task);
+                    }
                 } else {
                     throw new RuntimeException("Lack of the device id");
                 }

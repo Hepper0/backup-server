@@ -5,6 +5,7 @@ import java.util.List;
 import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
 import com.backup.server.config.RedisConfig;
+import com.backup.server.config.StatusConfig;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkTaskMapper;
 import com.backup.server.domain.BkTask;
@@ -103,16 +104,20 @@ public class BkTaskServiceImpl implements IBkTaskService
         return bkTaskMapper.deleteBkTaskByTaskId(taskId);
     }
 
-    private Integer getTaskStatusFromCache(String agentIP, String taskId) {
-        return redis.getCacheObject(RedisConfig.REDIS_AGENT_RUNNING_PREFIX + agentIP + ":" + taskId);
+    private boolean getTaskStatusFromCache(String agentIP, String taskId) {
+        return redis.getCacheObject(RedisConfig.REDIS_AGENT_RUNNING_PREFIX + agentIP + ":" + taskId) != null;
     }
 
     private void setStatus(BkTask bkTask) {
-        // 为空表示任务还没有得到运行结果,查询缓存是否在运行中
-        if (bkTask.getStatus() == null) {
-            Integer status = getTaskStatusFromCache(bkTask.getAgentIP(), bkTask.getTaskId());
-            if (status != null){
-                bkTask.setStatus(new Long(status));
+        // 任务还没有得到运行结果,查询缓存是否在运行中
+        if (bkTask.getStatus().equals(StatusConfig.TASK_RESULT_RUNNING)) {
+            boolean status = getTaskStatusFromCache(bkTask.getAgentIP(), bkTask.getTaskId());
+            // 两边状态不一致,说明任务有问题
+            if (!status){
+                // 任务已经被中止, 但是server没有收到通知
+                bkTask.setStatus(StatusConfig.TASK_RESULT_FAILURE);
+                bkTask.setRemark("任务异常中止, 请联系管理员排查.");
+//                bkTask.setStatus(new Long(StatusConfig.TASK_RESULT_RUNNING));
             }
         }
     }

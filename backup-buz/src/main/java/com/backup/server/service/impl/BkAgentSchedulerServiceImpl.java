@@ -1,8 +1,12 @@
 package com.backup.server.service.impl;
 
 import java.util.List;
+
+import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backup.server.core.MessageHandler;
+import com.backup.server.domain.BkScheduler;
+import com.backup.server.mapper.BkSchedulerMapper;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentSchedulerMapper;
 import com.backup.server.domain.BkAgentScheduler;
@@ -21,6 +25,9 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
 {
     @Resource
     private BkAgentSchedulerMapper bkAgentSchedulerMapper;
+
+    @Resource
+    private BkSchedulerMapper schedulerMapper;
 
     /**
      * 查询代理计划
@@ -94,5 +101,12 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     public int deleteBkAgentSchedulerById(Long id)
     {
         return bkAgentSchedulerMapper.deleteBkAgentSchedulerById(id);
+    }
+
+    @Override
+    public boolean syncBkAgentScheduler(BkAgentScheduler bkAgentScheduler) {
+        BkScheduler scheduler = schedulerMapper.selectBkSchedulerBySchedulerId(new Long(bkAgentScheduler.getScheduler()));
+        JSONObject resp = (JSONObject) MessageHandler.request(JSONObject.toJSONString(scheduler), bkAgentScheduler.getAgentIP());
+        return resp.getInteger("code") == 0;
     }
 }

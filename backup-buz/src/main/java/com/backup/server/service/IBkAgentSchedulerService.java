@@ -34,6 +34,7 @@ public interface IBkAgentSchedulerService
      * @return 结果
      */
     public int insertBkAgentScheduler(BkAgentScheduler bkAgentScheduler);
+    public boolean syncBkAgentScheduler(BkAgentScheduler bkAgentScheduler);
 
     /**
      * 修改代理计划
