@@ -15,4 +15,8 @@ public interface RedisConfig {
 
     // KEY EXPIRE EVENT
     String REDIS_KEY_EXPIRE_EVENT = "__keyevent@*__:expired";
+
+    String REDIS_MSG_TYPE_SCHEDULER = "scheduler";
+    String REDIS_MSG_TYPE_RESOURCE = "resource";
+    String REDIS_MSG_TYPE_CONFIG = "config";
 }

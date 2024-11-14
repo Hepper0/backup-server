@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.utils.DateUtils;
+import com.backup.server.config.RedisConfig;
 import com.backup.server.core.MessageHandler;
 import com.backup.server.domain.BkScheduler;
 import com.backup.server.mapper.BkSchedulerMapper;
@@ -106,7 +107,7 @@ public class BkAgentSchedulerServiceImpl implements IBkAgentSchedulerService
     @Override
     public boolean syncBkAgentScheduler(BkAgentScheduler bkAgentScheduler) {
         BkScheduler scheduler = schedulerMapper.selectBkSchedulerBySchedulerId(new Long(bkAgentScheduler.getScheduler()));
-        JSONObject resp = (JSONObject) MessageHandler.request(JSONObject.toJSONString(scheduler), bkAgentScheduler.getAgentIP());
+        JSONObject resp = (JSONObject) MessageHandler.request(RedisConfig.REDIS_MSG_TYPE_SCHEDULER, scheduler, bkAgentScheduler.getAgentIP());
         return resp.getInteger("code") == 0;
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
 import com.backup.server.config.RedisConfig;
+import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,8 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     @Override
     public void broadcast(BkAgentConfig bkAgentConfig) {
         Message message = new Message();
-        message.setPayload(bkAgentConfig.toMap());
-        redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message);
+        message.setPayload(new BuzMessage(RedisConfig.REDIS_MSG_TYPE_CONFIG, bkAgentConfig.toMap()));
+        redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message.toString());
     }
 
     /**

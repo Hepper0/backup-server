@@ -3,6 +3,7 @@ package com.backup.server.service.impl;
 import java.util.List;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.backup.server.config.RedisConfig;
 import com.backup.server.core.MessageHandler;
 import com.backup.server.domain.BkAgent;
 import com.backup.server.mapper.BkAgentMapper;
@@ -132,7 +133,7 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     @Override
     public boolean send2Agent(String ip) {
         List<String> resourceList = bkAgentResourceMapper.selectBkAgentResourceListByIP(ip);
-        JSONObject resp = (JSONObject) MessageHandler.request(JSONObject.toJSONString(resourceList), ip);
+        JSONObject resp = (JSONObject) MessageHandler.request(RedisConfig.REDIS_MSG_TYPE_RESOURCE, resourceList, ip);
         return resp.getInteger("code") == 0;
     }
 }

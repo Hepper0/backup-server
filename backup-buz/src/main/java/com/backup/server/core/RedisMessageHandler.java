@@ -2,6 +2,7 @@ package com.backup.server.core;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.core.redis.RedisCache;
+import com.backup.server.config.RedisConfig;
 import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkAgent;
@@ -10,7 +11,9 @@ import com.backup.server.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.Collection;
 
 // 实际的消息处理逻辑
 @Slf4j
@@ -35,6 +38,16 @@ public class RedisMessageHandler {
     @Resource
     IBkAgentResourceService agentResourceService;
 
+    @PostConstruct
+    public void init() {
+        Collection<String> onlineAgentKeys = redisCache.keys(RedisConfig.REDIS_AGENT_ONLINE_PREFIX + "*");
+        for (String key : onlineAgentKeys){
+            String[] keyArr = key.split(":");
+            String ip = keyArr[2];
+            getMessageHandler(ip);
+        }
+    }
+
     // 处理Redis订阅的消息
     public synchronized void handleMessage(String msg) {
         MessageHandler handler;
@@ -55,13 +68,18 @@ public class RedisMessageHandler {
             handler.handleResponseMessage(message);
         } else {
             // Agent主动向JAVA端推送的消息
-            handler = MessageHandler.getHandler(ip);
-            if (handler == null) {
-                handler = new MessageHandler(ip, redisCache);
-                listen(ip);
-            }
+            handler = getMessageHandler(ip);
             handler.handleMessage(message);
         }
+    }
+
+    public MessageHandler getMessageHandler(String ip) {
+        MessageHandler handler = MessageHandler.getHandler(ip);
+        if (handler == null) {
+            handler = new MessageHandler(ip, redisCache);
+            listen(ip);
+        }
+        return handler;
     }
 
     // 监听Agent主动向JAVA端推送的消息

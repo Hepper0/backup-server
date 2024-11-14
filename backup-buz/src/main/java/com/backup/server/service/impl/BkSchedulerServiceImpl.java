@@ -6,6 +6,7 @@ import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
 import com.backup.server.config.RedisConfig;
 import com.backup.server.core.MessageHandler;
+import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkSchedulerBroadcast;
 import lombok.extern.slf4j.Slf4j;
@@ -115,15 +116,17 @@ public class BkSchedulerServiceImpl implements IBkSchedulerService
         return bkSchedulerMapper.deleteBkSchedulerBySchedulerId(schedulerId);
     }
 
+    // 全广播
     public void broadcast(BkScheduler bkScheduler) {
         Message message = new Message();
-        message.setPayload(bkScheduler.toMap());
-        redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message);
+        message.setPayload(new BuzMessage(RedisConfig.REDIS_MSG_TYPE_SCHEDULER, bkScheduler.toMap()));
+        redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message.toString());
     }
 
+    // 局部广播
     public void broadcast(BkSchedulerBroadcast bkSchedulerBroadcast) {
         BkScheduler bkScheduler = bkSchedulerBroadcast.getBkScheduler();
         List<String> ipList = bkSchedulerBroadcast.getIpList();
-        MessageHandler.broadcast(bkScheduler.toMap(), ipList);
+        MessageHandler.broadcast(RedisConfig.REDIS_MSG_TYPE_SCHEDULER, bkScheduler.toMap(), ipList);
     }
 }

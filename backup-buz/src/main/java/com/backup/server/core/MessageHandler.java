@@ -107,12 +107,12 @@ public class MessageHandler {
         }
     }
 
-    public Message createMessage(Object data) {
+    public Message createMessage(Object payload) {
         uuid = IdUtils.simpleUUID();
         Message message = new Message();
         message.setIp(ip);
         message.setUuid(uuid);
-        message.setPayload(data);
+        message.setPayload(payload);
         return message;
     }
 
@@ -138,31 +138,34 @@ public class MessageHandler {
         return agentReceiverMap.get(ip);
     }
 
-    public static void broadcast(Object data, List<String> ipList) {
+    public static void broadcast(String eventType, Object data, List<String> ipList) {
+        BuzMessage payload = new BuzMessage(eventType, data);
         for (String ip : ipList) {
             MessageHandler handler = getHandler(ip);
             if (handler != null) {
-                handler.push(data);
+                handler.push(payload);
             } else {
                 log.warn("The handler of {} is not found!", ip);
             }
         }
     }
 
-    public static Object request(Object data, String ip) {
+    public static Object request(String eventType, Object data, String ip) {
+        BuzMessage payload = new BuzMessage(eventType, data);
         MessageHandler handler = getHandler(ip);
         if (handler != null) {
-            Message respMsg = handler.request(data);
+            Message respMsg = handler.request(payload);
             return respMsg.getData();
         } else {
             throw new RuntimeException("handler of "+ ip + " is not found");
         }
     }
 
-    public static void push(Object data, String ip) {
+    public static void push(String eventType, Object data, String ip) {
+        BuzMessage payload = new BuzMessage(eventType, data);
         MessageHandler handler = getHandler(ip);
         if (handler != null) {
-            handler.push(data);
+            handler.push(payload);
         } else {
             throw new RuntimeException("handler of "+ ip + " is not found");
         }

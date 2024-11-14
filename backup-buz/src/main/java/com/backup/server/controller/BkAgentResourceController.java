@@ -50,10 +50,10 @@ public class BkAgentResourceController extends BaseController
     {
         String agentIP = bkAgentResource.getAgentIP();
         List<BkAgentResource> list;
+        startPage();
         if (agentIP != null){
             return getDataTable(bkAgentResourceService.selectBkAgentResourceListByIP(agentIP));
         } else {
-            startPage();
             list = bkAgentResourceService.selectBkAgentResourceList(bkAgentResource);
             return getDataTable(list);
         }
@@ -140,7 +140,11 @@ public class BkAgentResourceController extends BaseController
 
     @PreAuthorize("@ss.hasPermi('server:resource:edit')")
     @PostMapping("/send")
-    public AjaxResult send2Agent(String ip) {
-        return toAjax(bkAgentResourceService.send2Agent(ip));
+    public AjaxResult send2Agent(@RequestBody BkAgentResource bkAgentResource) {
+        String agentIP = bkAgentResource.getAgentIP();
+        if (agentIP == null) {
+            agentIP = bkAgentResource.getAgentId();
+        }
+        return toAjax(bkAgentResourceService.send2Agent(agentIP));
     }
 }

@@ -104,7 +104,7 @@ public class BkAgentSchedulerController extends BaseController
     }
 
     @Log(title = "备份计划代理配置", businessType = BusinessType.OTHER)
-    @DeleteMapping("/sync")
+    @PostMapping("/sync")
     public AjaxResult syncScheduler(@RequestBody BkAgentScheduler bkAgentScheduler)
     {
         return toAjax(bkAgentSchedulerService.syncBkAgentScheduler(bkAgentScheduler));
