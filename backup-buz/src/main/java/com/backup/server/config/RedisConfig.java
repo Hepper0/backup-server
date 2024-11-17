@@ -9,6 +9,7 @@ public interface RedisConfig {
     // KEY
     String REDIS_AGENT_ONLINE_PREFIX = "backup:online:";
     String REDIS_AGENT_RUNNING_PREFIX = "backup:running:";
+    String REDIS_AGENT_PREFIX = "backup:agent:";
 
     // EVENT
     String REDIS_AGENT_ONLINE_EVENT = "backup:event:online";

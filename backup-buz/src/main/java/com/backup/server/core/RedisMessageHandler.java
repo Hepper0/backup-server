@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Map;
 
 // 实际的消息处理逻辑
 @Slf4j
@@ -44,7 +45,18 @@ public class RedisMessageHandler {
         for (String key : onlineAgentKeys){
             String[] keyArr = key.split(":");
             String ip = keyArr[2];
+            // 启动agent后, 再重启server
+            // 添加handler
             getMessageHandler(ip);
+            // 添加Agent记录
+            BkAgent agent = agentService.selectBkAgentByAgentIP(ip);
+            if (agent == null) {
+                Map<String, Object> agentCache = redisCache.getCacheMap(RedisConfig.REDIS_AGENT_PREFIX + ip);
+                agent = new BkAgent();
+                agent.setHostname((String) agentCache.get("hostname"));
+                agent.setIp(ip);
+                agentService.insertBkAgent(agent);
+            }
         }
     }
 
