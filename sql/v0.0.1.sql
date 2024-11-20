@@ -25,6 +25,7 @@ drop table if exists bk_task;
 create table bk_task(
                       task_id varchar(50) primary key,
                       ip varchar(30),
+                      task_type int,
                       target varchar(100),
                       backup_path varchar(200),
                       start_time datetime,

@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BkTask" id="BkTaskResult">
         <result property="taskId"    column="task_id"    />
         <result property="target"    column="target"    />
+        <result property="taskType"    column="task_type"    />
         <result property="agentIP"    column="ip"    />
         <result property="backupPath"    column="backup_path"    />
         <result property="startTime"    column="start_time"    />
@@ -21,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBkTaskVo">
-        select task_id, target, ip, backup_path, start_time, end_time, status, remark, deleted, create_time, create_by, update_time, update_by from bk_task
+        select task_id, target, task_type, ip, backup_path, start_time, end_time, status, remark, deleted, create_time, create_by, update_time, update_by from bk_task
     </sql>
 
     <select id="selectBkTaskList" parameterType="BkTask" resultMap="BkTaskResult">
@@ -29,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             deleted = 0
             <if test="agentIP != null  and agentIP != ''"> and ip = #{agentIP}</if>
+            <if test="taskType != null  and taskType != ''"> and task_type = #{taskType}</if>
             <if test="target != null  and target != ''"> and target = #{target}</if>
             <if test="backupPath != null  and backupPath != ''"> and backup_path = #{backupPath}</if>
             <if test="startTime != null "> and date(start_time) = #{startTime}</if>
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="taskId != null">task_id,</if>
             <if test="agentIP != null">ip,</if>
+            <if test="taskType != null">task_type,</if>
             <if test="target != null">target,</if>
             <if test="backupPath != null">backup_path,</if>
             <if test="startTime != null">start_time,</if>
@@ -64,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="taskId != null">#{taskId},</if>
             <if test="agentIP != null">#{agentIP},</if>
+            <if test="taskType != null">#{taskType},</if>
             <if test="target != null">#{target},</if>
             <if test="backupPath != null">#{backupPath},</if>
             <if test="startTime != null">#{startTime},</if>
@@ -83,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="agentIP != null">ip = #{agentIP},</if>
             <if test="target != null">target = #{target},</if>
+            <if test="taskType != null">task_type = #{taskType},</if>
             <if test="backupPath != null">backup_path = #{backupPath},</if>
             <if test="startTime != null">start_time = #{startTime},</if>
             <if test="endTime != null">end_time = #{endTime},</if>

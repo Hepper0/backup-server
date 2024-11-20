@@ -26,28 +26,29 @@ public class BkTask extends BaseEntity
     /** agentIP */
     private String agentIP;
 
+    /** 任务类型 */
+    private String taskType;
+
     /** 备份目标 */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "备份目标", readConverterExp = "$column.readConverterExp()")
     private String target;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "备份路径", readConverterExp = "$column.readConverterExp()")
     private String backupPath;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "开始时间", readConverterExp = "$column.readConverterExp()")
     private Date startTime;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "结束时间", readConverterExp = "$column.readConverterExp()")
     private Date endTime;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "状态", readConverterExp = "$column.readConverterExp()")
     private Long status;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long deleted;
 
 //    public void setTaskId(String taskId)

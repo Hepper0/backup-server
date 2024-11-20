@@ -46,13 +46,10 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T>
             return null;
         }
         String str = new String(bytes, DEFAULT_CHARSET);
-        try {
-            Integer.valueOf(str);
-        } catch (NumberFormatException e) {
-            if (bytes[0] != '{' && bytes[0] != '[') {
-                str = "\"" + str + "\"";
-            }
-        }
+
+//        if (bytes[0] != '{' && bytes[0] != '[' && bytes[0] != '\"') {
+//            str = "\"" + str + "\"";
+//        }
         return JSON.parseObject(str, clazz, AUTO_TYPE_FILTER);
     }
 }
