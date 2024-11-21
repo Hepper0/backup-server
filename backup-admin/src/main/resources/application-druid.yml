@@ -2,13 +2,14 @@
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        driverClassName: com.mysql.cj.jdbc.Driver
+#        driverClassName: com.mysql.cj.jdbc.Driver
+        driverClassName: com.alipay.oceanbase.jdbc.Driver
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://10.0.16.219:3306/bk?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:oceanbase://10.0.16.130:2881/bk?characterEncoding=utf8
                 username: root
-                password: igg123456
+                password:
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
