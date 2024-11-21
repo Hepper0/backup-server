@@ -6,9 +6,11 @@ import com.backup.server.config.RedisConfig;
 import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
 import com.backup.server.domain.BkAgent;
+import com.backup.server.domain.BkAgentConfig;
 import com.backup.server.domain.BkTask;
 import com.backup.server.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +40,9 @@ public class RedisMessageHandler {
 
     @Resource
     IBkAgentResourceService agentResourceService;
+
+    @Value("${spring.redis.database}")
+    private String redisDatabase;
 
     @PostConstruct
     public void init() {
@@ -160,7 +165,9 @@ public class RedisMessageHandler {
         BuzMessage buzMessage = new BuzMessage(json);
         switch (buzMessage.getEventType()) {
             case "config":
-                buzMessage.setData(configService.selectAvailableBkAgentConfig().toMap());
+                BkAgentConfig agentConfig = configService.selectAvailableBkAgentConfig();
+                agentConfig.setRedisDb(redisDatabase);
+                buzMessage.setData(agentConfig.toMap());
                 return buzMessage.toMap();
             case "scheduler":
                 buzMessage.setData(schedulerService.selectBkSchedulerByIP(ip).toMap());

@@ -7,7 +7,7 @@ import com.backup.common.utils.DateUtils;
 import com.backup.server.config.RedisConfig;
 import com.backup.server.core.domain.BuzMessage;
 import com.backup.server.core.domain.Message;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkAgentConfigMapper;
 import com.backup.server.domain.BkAgentConfig;
@@ -30,6 +30,9 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     @Resource
     RedisCache redis;
 
+    @Value("${spring.redis.database}")
+    private String redisDatabase;
+
     /**
      * 查询代理配置
      *
@@ -50,6 +53,7 @@ public class BkAgentConfigServiceImpl implements IBkAgentConfigService
     @Override
     public void broadcast(BkAgentConfig bkAgentConfig) {
         Message message = new Message();
+        bkAgentConfig.setRedisDb(redisDatabase); // redisDB 要跟java同步
         message.setPayload(new BuzMessage(RedisConfig.REDIS_MSG_TYPE_CONFIG, bkAgentConfig.toMap()));
         redis.publish(RedisConfig.REDIS_BROADCAST_TOPIC, message.toString());
     }
