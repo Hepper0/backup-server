@@ -1,6 +1,7 @@
 package com.backup.server.controller;
 
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import com.backup.common.core.page.TableDataInfo;
 @RequestMapping("/server/task")
 public class BkTaskController extends BaseController
 {
-    @Autowired
+    @Resource
     private IBkTaskService bkTaskService;
 
     /**
@@ -100,5 +101,13 @@ public class BkTaskController extends BaseController
     public AjaxResult remove(@PathVariable Long[] taskIds)
     {
         return toAjax(bkTaskService.deleteBkTaskByTaskIds(taskIds));
+    }
+
+    @PreAuthorize("@ss.hasPermi('server:task:add')")
+    @Log(title = "备份任务", businessType = BusinessType.INSERT)
+    @PostMapping("/redo")
+    public AjaxResult redo(String serverId)
+    {
+        return toAjax(bkTaskService.redoBkTask(serverId));
     }
 }

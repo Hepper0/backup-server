@@ -1,11 +1,16 @@
 package com.backup.server.service.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.backup.common.core.redis.RedisCache;
 import com.backup.common.utils.DateUtils;
 import com.backup.server.config.RedisConfig;
 import com.backup.server.config.StatusConfig;
+import com.backup.server.core.MessageHandler;
+import com.backup.server.core.domain.TaskAction;
 import org.springframework.stereotype.Service;
 import com.backup.server.mapper.BkTaskMapper;
 import com.backup.server.domain.BkTask;
@@ -106,6 +111,31 @@ public class BkTaskServiceImpl implements IBkTaskService
 
     private boolean getTaskStatusFromCache(String agentIP, String taskId) {
         return redis.getCacheObject(RedisConfig.REDIS_AGENT_RUNNING_PREFIX + agentIP + ":" + taskId) != null;
+    }
+
+    public boolean redoBkTask(String serverId){
+        BkTask task = new BkTask();
+        task.setTarget(serverId);
+        task.setStartTime(new Date());
+        // 当天有任务,且没有成功的任务, 才可以下发
+        List<BkTask> tasks = bkTaskMapper.selectBkTaskList(task);
+        if (tasks.size() > 0) {
+            AtomicBoolean isSend = new AtomicBoolean(true);
+            tasks.forEach(t -> {
+                if (t.getStatus().equals(StatusConfig.TASK_RESULT_SUCCESS)) {
+                    isSend.set(false);
+                }
+            });
+            if (isSend.get()) {
+                TaskAction action = new TaskAction();
+                action.setAction("backup");
+                action.setServerId(serverId);
+                JSONObject resp = (JSONObject) MessageHandler.request(RedisConfig.REDIS_MSG_TYPE_TASK, action, tasks.get(0).getAgentIP());
+                return resp.getInteger("code") == 0;
+            }
+            throw new RuntimeException("当天的备份任务已执行成功,无需重复执行.");
+        }
+        throw new RuntimeException("当天的备份任务还未执行");
     }
 
     private void setStatus(BkTask bkTask) {

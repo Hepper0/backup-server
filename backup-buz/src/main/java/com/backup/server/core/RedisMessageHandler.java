@@ -209,6 +209,7 @@ public class RedisMessageHandler {
                     task = new BkTask();
                     task.setTaskId(taskId);
                     task.setAgentIP(ip);
+                    task.setTaskType(eventData.getString("taskType"));
                     task.setBackupPath(eventData.getString("backupPath"));
                     task.setTarget(eventData.getString("target"));
                     task.setStartTime(eventData.getDate("startTime"));

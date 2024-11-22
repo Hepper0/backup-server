@@ -20,4 +20,5 @@ public interface RedisConfig {
     String REDIS_MSG_TYPE_SCHEDULER = "scheduler";
     String REDIS_MSG_TYPE_RESOURCE = "resource";
     String REDIS_MSG_TYPE_CONFIG = "config";
+    String REDIS_MSG_TYPE_TASK = "task";
 }

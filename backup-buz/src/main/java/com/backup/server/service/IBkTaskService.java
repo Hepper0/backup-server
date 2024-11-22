@@ -58,4 +58,6 @@ public interface IBkTaskService
      * @return 结果
      */
     public int deleteBkTaskByTaskId(Long taskId);
+
+    public boolean redoBkTask(String serviceId);
 }
