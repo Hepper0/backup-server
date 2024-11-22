@@ -82,7 +82,21 @@ public class BkAgentResourceServiceImpl implements IBkAgentResourceService
     }
 
     @Override
-    public int insertBkAgentResources(String agentId, List<BkAgentResource> bkAgentResources) {
+    public int insertBkAgentResources(List<BkAgentResource> bkAgentResources) {
+        bkAgentResources.forEach(r -> {
+            String agentId = r.getAgentId();
+            if (agentId.contains(".")) {
+                BkAgent agent = agentMapper.selectBkAgentByAgentIP(agentId);
+                agentId = agent.getAgentId() + "";
+            }
+            String agentID = agentId;
+            r.setAgentId(agentID);
+        });
+        return bkAgentResourceMapper.insertBkAgentResources(bkAgentResources);
+    }
+
+    @Override
+    public int insertBkAgentResources(List<BkAgentResource> bkAgentResources, String agentId) {
         if (agentId.contains(".")) {
             BkAgent agent = agentMapper.selectBkAgentByAgentIP(agentId);
             agentId = agent.getAgentId() + "";

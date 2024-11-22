@@ -5,15 +5,15 @@ import com.backup.server.domain.BkAgentResource;
 
 /**
  * 备份资源Service接口
- * 
+ *
  * @author author
  * @date 2024-10-29
  */
-public interface IBkAgentResourceService 
+public interface IBkAgentResourceService
 {
     /**
      * 查询备份资源
-     * 
+     *
      * @param id 备份资源主键
      * @return 备份资源
      */
@@ -21,7 +21,7 @@ public interface IBkAgentResourceService
 
     /**
      * 查询备份资源列表
-     * 
+     *
      * @param bkAgentResource 备份资源
      * @return 备份资源集合
      */
@@ -31,16 +31,17 @@ public interface IBkAgentResourceService
 
     /**
      * 新增备份资源
-     * 
+     *
      * @param bkAgentResource 备份资源
      * @return 结果
      */
     public int insertBkAgentResource(BkAgentResource bkAgentResource);
-    public int insertBkAgentResources(String agentId, List<BkAgentResource> bkAgentResources);
+    public int insertBkAgentResources(List<BkAgentResource> bkAgentResources, String agentId);
+    public int insertBkAgentResources(List<BkAgentResource> bkAgentResources);
 
     /**
      * 修改备份资源
-     * 
+     *
      * @param bkAgentResource 备份资源
      * @return 结果
      */
@@ -48,7 +49,7 @@ public interface IBkAgentResourceService
 
     /**
      * 批量删除备份资源
-     * 
+     *
      * @param ids 需要删除的备份资源主键集合
      * @return 结果
      */
@@ -56,7 +57,7 @@ public interface IBkAgentResourceService
 
     /**
      * 删除备份资源信息
-     * 
+     *
      * @param id 备份资源主键
      * @return 结果
      */

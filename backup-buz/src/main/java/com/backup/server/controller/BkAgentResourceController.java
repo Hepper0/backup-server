@@ -1,6 +1,5 @@
 package com.backup.server.controller;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -8,9 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import com.backup.common.config.ProjectConfig;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -83,12 +80,16 @@ public class BkAgentResourceController extends BaseController
         ExcelUtil<BkAgentResource> util = new ExcelUtil<>(BkAgentResource.class);
         String agentId = bkAgentResource.getAgentId();
         String filename = bkAgentResource.getImportFilename();
-        System.out.println("agentId: " + agentId + ", filename: " + filename);
         String filePath = ProjectConfig.getProfile()+ "/" + filename.replace("/profile", "");
         try {
             InputStream inputStream = new FileInputStream(filePath);
             List<BkAgentResource> agentResources = util.importExcel(inputStream);
-            bkAgentResourceService.insertBkAgentResources(agentId, agentResources);
+            if (agentId == null) {
+                bkAgentResourceService.insertBkAgentResources(agentResources);
+            } else {
+                bkAgentResourceService.insertBkAgentResources(agentResources, agentId);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
